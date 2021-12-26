@@ -1,0 +1,99 @@
+body{
+  font-family: 'Roboto', sans-serif;
+}
+
+
+.BinaryTree{
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#input,#botao{
+  padding: 0.5vw;
+}
+
+#input{
+  height: 30%;
+  width: 30%;
+}
+
+#botao{
+  height: 45%;
+}
+
+
+
+#info{
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.circulo{
+
+  transition: all 1s ease;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-name: criaNode;
+  font-family: 'Roboto', sans-serif;
+}
+
+@keyframes criaNode{
+  
+  0%{
+    r:0;
+  }
+  50%{
+    r:12;
+  }
+  100%{
+    r:7;
+  }
+
+}
+
+.texto{
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-name: criaTexto;
+  font-family: 'Roboto', sans-serif;
+}
+
+@keyframes criaTexto{
+
+  0%{
+    font-size:0;
+  }
+  50%{
+    font-size:0.5vw;
+  }
+  100%{
+    font-size:0.3vw;
+  }
+
+}
+
+
+.linha{
+
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: move 5s linear;   
+  animation-fill-mode: forwards; 
+
+}
+
+@keyframes move {
+  100% {
+      stroke-dashoffset: 0;
+  }
+}
