@@ -1,17 +1,23 @@
 /////////////João Gabriel Ferreira///////////////
 //This program creates a visualization tool for a binary search tree
-//graphics are created with SVG element
+//graphics are created with SVG elements
 
 import React from 'react'
-import { useRef,useEffect } from 'react'; 
+import { useRef,useEffect,useState } from 'react'; 
 
 const BinaryTree = () => {
+
     
     const svgref = useRef(); //reference to SVG element
-    const svgContainer = useRef();
-    let nodecounter = 0;
-    let maxlevel = 0;
-
+    const svgContainer = useRef(); //reference to the div container that wraps the SVG element
+    let NODE_COUNTER = 0;
+    let MAX_LEVEL = 0;
+    let insertButton = null;
+    let searchButton = null;
+    const UPDATE_RATE = 15; //distance a node will move away from other
+    const DEFAULT_DISTANCE = 12; //default distance in x between a parent and its children
+    const DIFF_FROM_ROOT = 30;
+    let INSERTION_SEQUENCE_SPEED = 1000 // in ms //let because the user can change it
 
     class Node{
 
@@ -20,7 +26,8 @@ const BinaryTree = () => {
             this.value =  value;
             this.left = null;
             this.right = null;
-            this.distance = 30; //distance between this node and his children nodes in SVG 
+            this.leftdistance = DEFAULT_DISTANCE; //distance between this node and his left child nodes in SVG 
+            this.rightdistance = DEFAULT_DISTANCE; //distance between this node and his right child nodes in SVG 
             this.isROOT = false;
             this.parent = null;
             //x and y are the coordinates in svg
@@ -34,318 +41,228 @@ const BinaryTree = () => {
 
     let ROOT = null;
     
-    //levels[i] stores the nodes in a particular level of the tree
-    //Array.apply is used just to initialize the array with size 1000, with 0's on every position
-    //just to facilitate updating the array
-    let levels = Array.apply(null, Array(1000)).map(function (x, i) { return 0; })
  
+    //Array of nodes that needs to will have its positions and the positions of its children adjusted
+    let nodesToAdjust = [];
+    let deleteSequence = []
+    const insertionSoFar = [];
+
+
     //////////INSERT OPERATION///////////////
-    //(interative approach instead of recursive because then its easy to add the svg elements in the scene)
     const insert = (value) =>{
+
+        nodesToAdjust = [];
+
+        for(let i = 0;i<insertionSoFar.length;i++)
+        {
+            if(insertionSoFar[i] === value)
+            {
+                document.getElementById("message").innerText = "Duplicate values are not allowed";
+                return;
+            }
+        }
+
+        insertionSoFar.push(value);
 
         let y = null;
         let x = ROOT;
         let level = 0;
+        
+        const sequence = []; //sequence of nodes until it reaches the leave where the new node needs to be inserted
 
         while(x !== null)
         { 
-            y = x;
-            //marca o node
-
-            if(value < x.value)
-            {
-                x = x.left;
-            }else
-            {
-                x = x.right;
-            }
-            level++;
+                sequence.push(x);
+                y = x;
+            //y stores the parent
+                if(value < x.value)
+                {
+                    x = x.left;
+                }else
+                {
+                    x = x.right;
+                }
+                level++;
+            
         }
 
         let node = new Node(value);
         node.parent = y;
+
+        //if y === null this the root is being inserted
         if(y === null)
         {
             node.isROOT = true;
-            //values x and y for the root is always 50vw and 10vh
+            //values x and y for the root is always 50 and 10
             //for the others ones the position is based on the parent position
             node.x = 50;
             node.y = 10;
             node.isROOT = true;
-            node.number = ++nodecounter;
+            node.number = ++NODE_COUNTER;
             node.level = level;
-            let circulo = document.createElementNS("http://www.w3.org/2000/svg" ,'circle');
-            circulo.setAttributeNS(null,"cx",`${node.x}`);
-            circulo.setAttributeNS(null,"cy",`${node.y}`);
-            circulo.setAttributeNS(null,"r","7");
-            circulo.setAttribute("id",`${node.number}`);
-            circulo.setAttributeNS(null,"style","fill:blue; stroke:purple; stroke-width: 1;");
-            circulo.setAttribute("class","circulo");
-            circulo.setAttribute("id",`${node.number}c`);
-            svgref.current.appendChild(circulo);
-           
-            const texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
-            texto.setAttributeNS(null,"x",`${node.x}`);
-            texto.setAttributeNS(null,"y",`${node.y + 1}`);
-            texto.setAttributeNS(null,"style","text-anchor:middle; fill:white ;font-size:0.3vw; font-family:Arial; dy=.3em");
-            texto.textContent = `${node.value}`;
-            texto.setAttribute("class","texto");
-            texto.setAttribute("id",`${node.number}t`);
-            svgref.current.appendChild(texto);
-
             ROOT = node;
+            MAX_LEVEL = 1;
 
-            if(levels[level] === 0)
-            {
-                levels[level] = [node];
-            }else
-            {
-                levels[level] = [...levels[level],node];
-            }
-
+            AnimateInsertion(node,"ROOT",null);
+                       
             
-
-            maxlevel = 1;
 
         //not a root so set the positon based on parent's 
         }else if(node.value < y.value)
         {
-            
-            //if the distance of parent is 5, then the new distance 
-            //of new node will also be the distance of parent, else it will be the distance of 
-            //parent - 2
-            const dist = (y.distance <= 7 ? y.distance : y.distance - 12);
-            const x = y.x - y.distance;
+            //add node to the left of parent
+
+            const x = y.x - y.leftdistance;
             const yy = y.y + 20; // distance between levels is always 20
             node.x = x;
             node.y = yy;
-            node.distance = dist;
+            node.leftdistance = DEFAULT_DISTANCE;
+            node.rightdistance = DEFAULT_DISTANCE;
             node.isROOT = false;
             node.parent = y;
-            node.number = ++nodecounter;
+            node.number = ++NODE_COUNTER;
             node.level = level;
-
+            if(MAX_LEVEL < level)MAX_LEVEL = level;
             y.left = node;
 
 
-            const circulo = document.createElementNS("http://www.w3.org/2000/svg",'circle');
-            circulo.setAttributeNS(null,"cx",`${x}`);
-            circulo.setAttributeNS(null,"cy",`${yy}`);
-            circulo.setAttributeNS(null,"r",`7`);
-            circulo.setAttributeNS(null,"style","fill:blue; stroke:purple; stroke-width: 1;");
-            circulo.setAttribute("class","circulo");
-            circulo.setAttribute("id",`${node.number}c`);
+            insertButton.disabled = true;
 
-            //add edge between parent and new node
-            let linha = document.createElementNS("http://www.w3.org/2000/svg", 'line');  
-            linha.setAttribute("x1",`${y.x - 5}`);
-            linha.setAttribute("y1",`${y.y + 5}`);
-            linha.setAttribute("x2",`${x}`);
-            linha.setAttribute("y2",`${yy}`);
-            linha.setAttribute("class","linha");
-            const id = node.number + 'c' + 'l';
-            linha.setAttribute("id",id);
-            linha.style.stroke = "#000";   
-            linha.style.strokeWidth = "0.05vw";
-            
-            const texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
-            texto.setAttributeNS(null,"x",`${node.x}`);
-            texto.setAttributeNS(null,"y",`${node.y + 1}`);
-            texto.setAttributeNS(null,"style","text-anchor:middle; fill:white ;font-size:0.3vw; font-family:Arial; dy=.3em");
-            texto.textContent = `${node.value}`;
-            texto.setAttribute("class","texto");
-            texto.setAttribute("id",`${node.number}t`);
-            
+            //first animate the sequence of nodes, then animate the insertion of the new node
 
-            //add edge first and then add node, so edge doesnt overlap node
-            svgref.current.appendChild(linha);
-
+            AnimateSequence(sequence);
 
             setTimeout(() => {
-                svgref.current.appendChild(circulo);
-            }, 20);
             
-            setTimeout(() => {
-                svgref.current.appendChild(texto);
-            }, 20);
-
-
-            if(maxlevel < level)maxlevel = level;
-
-            //att levels array
-            if(levels[level] === 0)
-            {
-                levels[level] = [node];
-            }else levels[level] = [...levels[level],node];
-
-            for(let i = 0;i<=maxlevel;i++){
+                AnimateInsertion(node,"L",y);
+                insertButton.disabled = false;
+                document.getElementById("message").innerText = "";
+            }, (sequence.length)*INSERTION_SEQUENCE_SPEED  + 100 );
             
-                levels[i].sort((a,b)=>a.x - b.x);
+            
 
-            }
 
-            adjust();
 
         }else
         {
-            const dist = (y.distance <= 7 ? y.distance : y.distance - 12);
-            const x = y.x + y.distance;
+
+            //add node to the right of parent
+            const x = y.x + y.rightdistance;
             const yy = y.y + 20; // distance between levels is always 20
             node.x = x;
             node.y = yy;
-            node.distance = dist;
+            node.leftdistance = DEFAULT_DISTANCE;
+            node.rightdistance = DEFAULT_DISTANCE;
             node.isROOT = false;
             node.parent = y;
-            node.number = ++nodecounter;
+            node.number = ++NODE_COUNTER;
             node.level = level;
-
+            if(MAX_LEVEL < level)MAX_LEVEL = level;
             y.right = node;
 
 
-            const circulo = document.createElementNS("http://www.w3.org/2000/svg",'circle');
-            circulo.setAttributeNS(null,"cx",`${x}`);
-            circulo.setAttributeNS(null,"cy",`${yy}`);
-            circulo.setAttributeNS(null,"r",`7`);
-            circulo.setAttributeNS(null,"style","fill:blue; stroke:purple; stroke-width: 1;");
-            circulo.setAttribute("class","circulo");
-            circulo.setAttribute("id",`${node.number}c`);
+            insertButton.disabled = true;
 
-            //add edge between parent and new node
-            let linha = document.createElementNS("http://www.w3.org/2000/svg", 'line');  
-            linha.setAttribute("x1",`${y.x + 5}`);
-            linha.setAttribute("y1",`${y.y + 5}`);
-            linha.setAttribute("x2",`${x}`);
-            linha.setAttribute("y2",`${yy}`);
-            linha.setAttribute("class","linha");
-            const id = node.number + 'c' + 'r';
-            linha.setAttribute("id",id) ;
-            linha.style.stroke = "#000";   
-            linha.style.strokeWidth = "0.05vw";
-            
-            const texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
-            texto.setAttributeNS(null,"x",`${node.x}`);
-            texto.setAttributeNS(null,"y",`${node.y + 1}`);
-            texto.setAttributeNS(null,"style","text-anchor:middle; fill:white ;font-size:0.3vw; font-family:Arial; dy=.3em");
-            texto.textContent = `${node.value}`;
-            texto.setAttribute("class","texto");
-            texto.setAttribute("id",`${node.number}t`);
-            
-
-            //add edge first and then add node, so edge doesnt overlap node
-            svgref.current.appendChild(linha);
-
+            AnimateSequence(sequence);
 
             setTimeout(() => {
-                svgref.current.appendChild(circulo);
-            }, 20);
-            
-            setTimeout(() => {
-                svgref.current.appendChild(texto);
-            }, 20);
 
-
-            if(maxlevel < level)maxlevel = level;
-
-            //att levels array
-            if(levels[level] === 0)
-            {
-                levels[level] = [node];
-            }else levels[level] = [...levels[level],node];
-
-            for(let i = 0;i<=maxlevel;i++){
-                
-                levels[i].sort((a,b)=>a.x - b.x);            
-            }
-
-            adjust();
+                AnimateInsertion(node,"R",y);
+                insertButton.disabled = false;
+                document.getElementById("message").innerText = "";
+            }, (sequence.length)*INSERTION_SEQUENCE_SPEED + 100);
 
         }
 
     }
 
-    //In order traversal
-    const traversal = (current) =>{
+    const AnimateSequence = (sequence) =>{
 
-        if(current !== null)
+        for(let i = 0;i<sequence.length;i++)
         {
-            traversal(current.left);
-            console.log(current.value);
-            traversal(current.right);
+            setTimeout(() => {
+                
+                const n = sequence[i].number;
+                const id = `${n}c`;
+                const node = document.getElementById(id);
+                node.setAttribute("style","fill:white; stroke:#497549; stroke-width: 1.5;");
+                
+                setTimeout(() => {
+                    node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
+                }, INSERTION_SEQUENCE_SPEED);
+
+                //console.log(node);
+
+            }, INSERTION_SEQUENCE_SPEED*(i));
         }
+
     }
 
 
-        const add = () =>{
-            const input = document.getElementById("input");
-            if(input.value === "")return;
-            const valor = parseInt(input.value);
-            insert(valor);
-            //console.log("Tree:");
-            //traversal(ROOT);
-        }
 
 
-        
-          //verify if there is a node overlaping another
-          //if yes, then adjust the tree
-        const adjust = () =>{
 
-            //get all nodes in order of levels
-            
-            let niveis = Array.apply(null, Array(maxlevel + 1)).map(function (x, i) { return []; })   
-            
+    const add = () =>{
+        const input = document.getElementById("input");
+        if(input.value === "")return;
+        const valor = parseInt(input.value);
+        document.getElementById("message").innerText = `Inserting ${valor} into the tree.`;
+        insert(valor);
+    }
+
+
+        const AdjustLeft_left_root = (node) =>{
+
+             nodesToAdjust.push(node);
+            let niveis = Array.apply(null, Array(MAX_LEVEL + 1)).map(function (x, i) { return []; })  
             niveis = levelTraversal(niveis,ROOT,0);
-            
-            //go throught each level checking if there are nodes overlaped
 
-            let overlapedlevel = - 1;
-            let sameParent = false;
-            let differentSubTrees = false;
-            //console.log("niveis:",niveis);
+            let index = -1;
 
-            console.log("maxlevel:",maxlevel);
-            for(let i = 0;i<=maxlevel;i++)
+            for(let i = 0;i<niveis[node.level].length;i++)
             {
-                //console.log("looking at level ",i);
-                for(let j = 0;j<niveis[i].length;j++)
+                if(node === niveis[node.level][i])
                 {
-                    //console.log("looking at ", niveis[i][j]);
-                    for(let k = j + 1;k<niveis[i].length;k++)
-                    {
-                        //console.log(niveis[i][j]," and ",niveis[i][k]);
-                        if(niveis[i][k].x < niveis[i][j].x || ( niveis[i][j].x + 7 > niveis[i][k].x -7))
-                        {
-                            //the three needs to be adjusted
-                            overlapedlevel = i;
-                            if(niveis[i][j].parent === niveis[i][k].parent)sameParent = true;
-                            if(niveis[i][j].parent.x < ROOT.x && niveis[i][k].parent.x > ROOT.x)differentSubTrees = true;
-                        }
-                    }
+                    index = i;
+                    break;
                 }
             }
-            //log("overlaped level:",overlapedlevel);
-            //console.log("sameParent:",sameParent);
-            //console.log("different sub trees:",differentSubTrees);
-            //if differentsubTrees === true the two nodes are in different sub tres relative to the root
-            //in this case just inscrease  the distance for the root and update all nodes
 
-            if(differentSubTrees)
-            {
-                setTimeout(() => {
-                    updateroot(10);    
-                }, 1000);
-                
-            
-            }
-            else if(sameParent)console.log();
-            else console.log();
-            //if sameParent === true update distances and positions of all nodes
+            //if the node is the first in its level nothing needs to be done
+            if(index < 1)return;
 
-            //if overlapped > - 1 and sameParent === false
-            //update positions of all nodes except the ones in the overlaped level:
-            //console.log("niveis:",niveis);
+            //find lowest common ancestor between niveis[node.level][index-1] and niveis[node.level][index]
+            AdjustLeft_left_root(LowestCommonAncestor(ROOT,niveis[node.level][index-1].value,niveis[node.level][index].value));
+           
+           
+
         }
 
+        const AdjustRight_right_root = (node) =>{
+
+            nodesToAdjust.push(node);
+            let niveis = Array.apply(null, Array(MAX_LEVEL + 1)).map(function (x, i) { return []; })  
+            niveis = levelTraversal(niveis,ROOT,0);
+
+            let index = -1;
+
+            for(let i = 0;i<niveis[node.level].length;i++)
+            {
+                if(node === niveis[node.level][i])
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            //if the node is the last in its level nothing needs to be done
+            if(index === -1 || index === niveis[node.level].length - 1)return;
+
+            AdjustRight_right_root(LowestCommonAncestor(ROOT,niveis[node.level][index+1].value,niveis[node.level][index].value));
+           
+        }
+
+        
         const levelTraversal = (niveis,node,level) =>{
             if(node === null)return niveis;
 
@@ -357,257 +274,941 @@ const BinaryTree = () => {
             return niveis;
         }
 
-        const updateroot = (rate) =>{
+        const LowestCommonAncestor = (node,v1,v2) =>{
 
+            if(node === null)return null;
+
+            if(node.value > v1 && node.value > v2)
+                return LowestCommonAncestor(node.left,v1,v2);
+            
+            if(node.value < v1 && node.value < v2)
+                return LowestCommonAncestor(node.right,v1,v2);
+        
+            return node;
+        }
+
+
+        const PulltoLeft = (node) =>{
+
+            //first increase distance of left child, then update the position of all 
+            //the nodes to the left
+            if(node.x === null || node.left === null)return;
+            const n = node.left.number;
+            const id = n + 'c';
+            const no = document.getElementById(id);
+            no.setAttribute("cx",node.left.x - UPDATE_RATE);
+            node.left.x -= UPDATE_RATE;
+            node.leftdistance += UPDATE_RATE;
+
+            
+            const idlinha = id + 'l';
+            const linha = document.getElementById(idlinha);
+            linha.setAttribute("x2",node.left.x);
+                
+            
+            const idtexto = node.left.number + 't';
+            const texto = document.getElementById(idtexto);
+            texto.setAttribute("x",node.left.x);
+                
+           
+
+
+            //now updates the positions of all the children
             const queue = [];
-
-            queue.push(ROOT);
+            queue.push(node.left);
 
             while(queue.length > 0)
             {
-                const node = queue.shift();
-
-                if(node.isROOT)
+                const current = queue.shift();
+                //console.log("current:",current);
+                if(current.left !== null)
                 {
-                    node.distance+= rate;
-                    if(node.left !== null)
-                    {
-                                        
-                    const n = node.left.number;
-                    const id = n + 'c';
-                    const no = document.getElementById(id);
-                    console.log("id:",id);
-                    console.log(no);
-                    no.setAttribute("cx",node.left.x - rate);
-                    const idlinha = id + 'l';
-                    const linha = document.getElementById(idlinha);
-                    //console.log(linha);
-                    linha.setAttribute("x2",node.left.x - rate);
-                    const idtexto = node.left.number + 't';
-                    const texto = document.getElementById(idtexto);
-                    texto.setAttribute("x",node.left.x - rate);
-                    node.left.x -=rate;
-                    
-                    }
-
-                    if(node.right !== null)
-                    {
-                        const n = node.right.number;
+                    setTimeout(() => {
+                        const n = current.left.number;
                         const id = n + 'c';
                         const no = document.getElementById(id);
-                        console.log("id:",id);
-                        console.log(no);
-                        no.setAttribute("cx",node.right.x + rate);
-                        const idlinha = id + 'r';
-                        const linha = document.getElementById(idlinha);
-                        //console.log(linha);
-                        linha.setAttribute("x2",node.right.x + rate);
-                        const idtexto = node.right.number + 't';
-                        const texto = document.getElementById(idtexto);
-                        texto.setAttribute("x",node.right.x + rate);
-                        node.right.x +=rate;
-                    }
+                        no.setAttribute("cx",current.x - current.leftdistance);
+                        current.left.x = current.x - current.leftdistance;
 
-                }else
-                {
-                    
-                    if(node.left !== null)
-                    {
-                        setTimeout(() => {
-                        
-                            const n = node.left.number;
-                        const id = n + 'c';
-                        const no = document.getElementById(id);
-                        console.log("id:",id);
-                        console.log(no);
-                        console.log("parent:",node);
-                        console.log("x do parent:",node.x);
-                        console.log("distance do parent:",node.distance);
-                        console.log("nova pos do node:",node.x - node.distance);
-                        no.setAttribute("cx",node.x - node.distance);
-                        
+
                         const idlinha = id + 'l';
                         const linha = document.getElementById(idlinha);
+                        linha.setAttribute("x1",current.x - 5);
+                        linha.setAttribute("x2",current.x - current.leftdistance);
                         //console.log(linha);
-                        //linha.setAttribute("x1",node)
-                        linha.setAttribute("x1",node.x - 5);
-                        linha.setAttribute("x2",node.x - node.distance);
                                
-                        const idtexto = node.left.number + 't';
+                        const idtexto = current.left.number + 't';
                         const texto = document.getElementById(idtexto);
-                        texto.setAttribute("x",node.x - node.distance);
-                        // node.left.x -= node.distance;
-                        node.left.x = node.x - node.distance;
-                        }, 100);
-                        
- 
-                        
-                    }
+                        texto.setAttribute("x",current.x - current.leftdistance);
+                    }, 100);
+                }
 
-                    if(node.right !== null)
-                    {
-                        setTimeout(() => {
-                        
-                            const n = node.right.number;
+                if(current.right !== null)
+                {
+                    setTimeout(() => {
+                        const n = current.right.number;
                         const id = n + 'c';
                         const no = document.getElementById(id);
-                        console.log("id:",id);
-                        console.log(no);
-                        console.log("parent:",node);
-                        console.log("x do parent:",node.x);
-                        console.log("distance do parent:",node.distance);
-                        console.log("nova pos do node:",node.x - node.distance);     
-                        no.setAttribute("cx",node.x + node.distance);
-                        
+                        no.setAttribute("cx",current.x + current.rightdistance);
+                        current.right.x = current.x + current.rightdistance;
+
                         const idlinha = id + 'r';
                         const linha = document.getElementById(idlinha);
-                        //console.log(linha);
-                        linha.setAttribute("x1",node.x + 5);
-                        linha.setAttribute("x2",node.x + node.distance);
-                            
-                        const idtexto = node.right.number + 't';
+                        linha.setAttribute("x1",current.x + 5);
+                        linha.setAttribute("x2",current.x + current.rightdistance);
+                               
+                        const idtexto = current.right.number + 't';
                         const texto = document.getElementById(idtexto);
-                        texto.setAttribute("x",node.x + node.distance);
-                        // node.right.x += node.distance;
-                        node.right.x = node.x + node.distance;
-                        }, 100);
-                        
-                    }
+                        texto.setAttribute("x",current.x + current.rightdistance);
+                    }, 100);
+
                 }
 
 
-                console.log("olhando para:",node);
-                if(node.left !== null)queue.push(node.left);
-                if(node.right !== null)queue.push(node.right);
+                if(current.left !== null)queue.push(current.left);
+                if(current.right !== null)queue.push(current.right);
+            }
+
+
+        }
+
+
+        const PulltoRight = (node) =>{
+
+            //first increase distance of right child, then update the position of all 
+            //the nodes to the left
+            if(node.x === null || node.right === null)return;
+            const n = node.right.number;
+            const id = n + 'c';
+            const no = document.getElementById(id);
+            no.setAttribute("cx",node.right.x + UPDATE_RATE);
+            node.right.x += UPDATE_RATE;
+            node.rightdistance += UPDATE_RATE;
+
+            
+            const idlinha = id + 'r';
+            const linha = document.getElementById(idlinha);
+            linha.setAttribute("x2",node.right.x);
+                
+            
+            const idtexto = node.right.number + 't';
+            const texto = document.getElementById(idtexto);
+            texto.setAttribute("x",node.right.x);
+                
+           
+
+
+            //now updates the positions of all the children
+            const queue = [];
+            queue.push(node.right);
+
+            while(queue.length > 0)
+            {
+                const current = queue.shift();
+                //console.log("current:",current);
+                if(current.left !== null)
+                {
+                    setTimeout(() => {
+                        const n = current.left.number;
+                        const id = n + 'c';
+                        const no = document.getElementById(id);
+                        no.setAttribute("cx",current.x - current.leftdistance);
+                        current.left.x = current.x - current.leftdistance;
+
+
+                        const idlinha = id + 'l';
+                        const linha = document.getElementById(idlinha);
+                        linha.setAttribute("x1",current.x - 5);
+                        linha.setAttribute("x2",current.x - current.leftdistance);
+                        //console.log(linha);
+                               
+                        const idtexto = current.left.number + 't';
+                        const texto = document.getElementById(idtexto);
+                        texto.setAttribute("x",current.x - current.leftdistance);
+                    }, 100);
+                }
+
+                if(current.right !== null)
+                {
+                    setTimeout(() => {
+                        const n = current.right.number;
+                        const id = n + 'c';
+                        const no = document.getElementById(id);
+                        no.setAttribute("cx",current.x + current.rightdistance);
+                        current.right.x = current.x + current.rightdistance;
+
+                        const idlinha = id + 'r';
+                        const linha = document.getElementById(idlinha);
+                        linha.setAttribute("x1",current.x + 5);
+                        linha.setAttribute("x2",current.x + current.rightdistance);
+                               
+                        const idtexto = current.right.number + 't';
+                        const texto = document.getElementById(idtexto);
+                        texto.setAttribute("x",current.x + current.rightdistance);
+                    }, 100);
+
+                }
+
+
+                if(current.left !== null)queue.push(current.left);
+                if(current.right !== null)queue.push(current.right);
+            }
+
+        }
+
+
+
+    const AnimateInsertion = (node,direction,y) =>{
+
+        if(direction === "ROOT")
+        {
+            let circulo = document.createElementNS("http://www.w3.org/2000/svg" ,'circle');
+            circulo.setAttributeNS(null,"cx",`${node.x}`);
+            circulo.setAttributeNS(null,"cy",`${node.y}`);
+            circulo.setAttributeNS(null,"r","7");
+            circulo.setAttribute("id",`${node.number}`);
+            circulo.setAttributeNS(null,"style","fill:white; stroke:#254569; stroke-width: 1;");
+             circulo.setAttribute("class","circulo");
+            circulo.setAttribute("id",`${node.number}c`);
+            svgref.current.appendChild(circulo);
+           
+            const texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+            texto.setAttributeNS(null,"x",`${node.x}`);
+            texto.setAttributeNS(null,"y",`${node.y + 1}`);
+            texto.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em");
+            texto.textContent = `${node.value}`;
+            texto.setAttribute("class","texto");
+            texto.setAttribute("id",`${node.number}t`);
+            setTimeout(() => {
+                svgref.current.appendChild(texto);    
+            }, 100);
+        }
+
+        if(direction === 'L')
+        {
+                        
+            const circulo = document.createElementNS("http://www.w3.org/2000/svg",'circle');
+            circulo.setAttributeNS(null,"cx",`${node.x}`);
+            circulo.setAttributeNS(null,"cy",`${node.y}`);
+            circulo.setAttributeNS(null,"r",`7`);
+            circulo.setAttributeNS(null,"style","fill:white; stroke:#254569; stroke-width: 1;");
+            circulo.setAttribute("class","circulo");
+            circulo.setAttribute("id",`${node.number}c`);
+
+            //add edge between parent and new node
+            let linha = document.createElementNS("http://www.w3.org/2000/svg", 'line');  
+            linha.setAttribute("x1",`${y.x - 5}`);
+            linha.setAttribute("y1",`${y.y + 5}`);
+            linha.setAttribute("x2",`${node.x}`);
+            linha.setAttribute("y2",`${node.y}`);
+            linha.setAttribute("class","linha");
+            const id = node.number + 'c' + 'l';
+            linha.setAttribute("id",id);
+            linha.style.stroke = "#254569";   
+            linha.style.strokeWidth = "0.05vw";
+            
+            const texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+            texto.setAttributeNS(null,"x",`${node.x}`);
+            texto.setAttributeNS(null,"y",`${node.y + 1}`);
+            texto.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em");
+            texto.textContent = `${node.value}`;
+            texto.setAttribute("class","texto");
+            texto.setAttribute("id",`${node.number}t`);
+            
+
+            //add edge first and then add node, so edge doesnt overlap node
+            svgref.current.appendChild(linha);
+
+
+            setTimeout(() => {
+                svgref.current.appendChild(circulo);
+            }, 50);
+            
+            setTimeout(() => {
+                svgref.current.appendChild(texto);
+            }, 150);
+
+
+            
+            if(node.x < ROOT.x)
+            {
+                //to the left of root
+                setTimeout(() => {
+
+
+                    let aux = node;
+                    while(aux.parent.right !== aux)
+                    {
+                        if(aux.parent === ROOT)break;
+                        aux = aux.parent;
+                    }
+
+                    if(aux.parent !== ROOT)nodesToAdjust.push(aux.parent);
+                    if(aux.parent === ROOT && node.parent.right !== null)nodesToAdjust.push(node.parent);
+                
+                    AdjustLeft_left_root(node);
+                
+                    nodesToAdjust = [...new Set(nodesToAdjust)];
+
+                for(let i = nodesToAdjust.length - 1;i>=0;i--)
+                {
+                    PulltoLeft(nodesToAdjust[i]);
+                }
+                
+                }, 500);
+                
+                
+                
+
+            }else //to the right of root
+            {
+                let niveis = Array.apply(null, Array(MAX_LEVEL + 1)).map(function (x, i) { return []; })  
+                niveis = levelTraversal(niveis,ROOT,0);
+    
+                let index = -1;
+    
+                for(let i = 0;i<niveis[node.level].length;i++)
+                {
+                    if(node === niveis[node.level][i])
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                //console.log(niveis);
+
+                setTimeout(() => {
+                    
+                    if(index === 0 && niveis[node.level][index].x - ROOT.x < DIFF_FROM_ROOT)
+                    {
+                        PulltoRight(ROOT);
+                    }
+                    if(index !== 0 && niveis[node.level][index-1].x < ROOT.x && niveis[node.level][index].x - ROOT.x < DIFF_FROM_ROOT)
+                    {
+                        PulltoRight(ROOT);
+                    }
+
+                    let aux = node;
+                    while(aux.parent.right !== aux)
+                    {
+                        aux = aux.parent;
+                    }
+
+                    // if(aux.parent !== ROOT)
+                    //     nodesToAdjust.push(aux.parent);
+
+                    AdjustRight_right_root(aux.parent);
+
+                    
+                    aux = aux.parent;
+
+                    if(aux !== ROOT && aux.parent !== null){
+                    while(aux.parent.right !== aux)
+                    {
+                        if(aux.parent === ROOT)break;
+                        aux = aux.parent;
+                    }
+                    if(aux.parent !== null)
+                        AdjustRight_right_root(aux.parent); 
+                    }
+                    AdjustLeft_left_root(node);
+
+
+                    for(let i = nodesToAdjust.length - 1;i>=0;i--)
+                    {
+                        PulltoRight(nodesToAdjust[i]);
+                    }
+
+                }, 500);
+
+
+            }
+            
+        }
+
+        if(direction === 'R')
+        {
+            const circulo = document.createElementNS("http://www.w3.org/2000/svg",'circle');
+            circulo.setAttributeNS(null,"cx",`${node.x}`);
+            circulo.setAttributeNS(null,"cy",`${node.y}`);
+            circulo.setAttributeNS(null,"r",`7`);
+            circulo.setAttributeNS(null,"style","fill:white; stroke:#254569; stroke-width: 1;");
+            circulo.setAttribute("class","circulo");
+            circulo.setAttribute("id",`${node.number}c`);
+
+            //add edge between parent and new node
+            let linha = document.createElementNS("http://www.w3.org/2000/svg", 'line');  
+            linha.setAttribute("x1",`${y.x + 5}`);
+            linha.setAttribute("y1",`${y.y + 5}`);
+            linha.setAttribute("x2",`${node.x}`);
+            linha.setAttribute("y2",`${node.y}`);
+            linha.setAttribute("class","linha");
+            const id = node.number + 'c' + 'r';
+            linha.setAttribute("id",id) ;
+            linha.style.stroke = "#254569";   
+            linha.style.strokeWidth = "0.05vw";
+            
+            const texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+            texto.setAttributeNS(null,"x",`${node.x}`);
+            texto.setAttributeNS(null,"y",`${node.y + 1}`);
+            texto.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold;  font-family:Poppins; dy=.3em");
+            texto.textContent = `${node.value}`;
+            texto.setAttribute("class","texto");
+            texto.setAttribute("id",`${node.number}t`);
+            
+
+            //add edge first and then add node, so edge doesnt overlap node
+            svgref.current.appendChild(linha);
+
+
+            setTimeout(() => {
+                svgref.current.appendChild(circulo);
+            }, 50);
+            
+            setTimeout(() => {
+                svgref.current.appendChild(texto);
+            }, 150);
+
+
+            if(node.x > ROOT.x)
+            {
+                
+
+                setTimeout(() => {
+                
+                    let aux = node;
+                    while(aux.parent.left !== aux)
+                    {
+                        if(aux.parent === ROOT)break;
+                        aux = aux.parent;
+                    }
+
+                    if(aux.parent !== ROOT)nodesToAdjust.push(aux.parent);
+                    if(aux.parent === ROOT && node.parent.left !== null)nodesToAdjust.push(node.parent);
+
+                    AdjustRight_right_root(node);
+                    
+                    nodesToAdjust = [...new Set(nodesToAdjust)];
+
+                for(let i = nodesToAdjust.length - 1;i>=0;i--)
+                {
+                    PulltoRight(nodesToAdjust[i]);
+                }
+                
+                }, 500);
+
+
+            }else
+            {
+                let niveis = Array.apply(null, Array(MAX_LEVEL + 1)).map(function (x, i) { return []; })  
+                niveis = levelTraversal(niveis,ROOT,0);
+    
+                let index = -1;
+    
+                for(let i = 0;i<niveis[node.level].length;i++)
+                {
+                    if(node === niveis[node.level][i])
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                
+                setTimeout(() => {
+
+                    if(index === niveis[node.level].length - 1 && ROOT.x - niveis[node.level][index].x < DIFF_FROM_ROOT)
+                    {
+                        PulltoLeft(ROOT);
+                    }
+                    if(index < niveis[node.level].length - 1 && niveis[node.level][index+1].x > ROOT.x && ROOT.x - niveis[node.level][index].x < DIFF_FROM_ROOT)
+                    {
+                        PulltoLeft(ROOT);
+                    }
+
+                    let aux = node;
+                    while(aux.parent.left !== aux)
+                    {
+                        aux = aux.parent;
+                    }
+
+                    // if(aux.parent !== ROOT)
+                    //     nodesToAdjust.push(aux.parent);
+
+                    AdjustLeft_left_root(aux.parent);
+
+                    
+                    aux = aux.parent;
+
+                    if(aux !== ROOT){
+                    while(aux.parent.right !== aux)
+                    {
+                        if(aux.parent === ROOT)break;
+                        aux = aux.parent;
+                    }
+                    if(aux.parent !== null)
+                        AdjustLeft_left_root(aux.parent); 
+                    }
+                    AdjustRight_right_root(node);
+
+
+                    for(let i = nodesToAdjust.length - 1;i>=0;i--)
+                    {
+                        PulltoLeft(nodesToAdjust[i]);
+                    }
+                }, 500);
+
+                
+
+
             }
         }
+
+    }
+
+    const look = () =>{
+
+        const input = document.getElementById("inputsearch");
+        if(input.value === "")return;
+        const value = parseInt(input.value);
         
-        // const updateroot = (rate) =>{
-
-        //     const queue = [];
-
-        //     queue.push(ROOT);
-
-        //     while(queue.length > 0)
-        //     {
-        //     let node = queue.shift();
-        //     if(node === null)continue;
-
-        //     console.log("olhando para:",node);
-
-        //     if(node.isROOT){
-        //     node.distance += rate;
-        //     if(node.left !== null){
-        //     setTimeout(() => {
-                
-        //         const n = node.left.number;
-        //         const id = n + 'c';
-        //         const no = document.getElementById(id);
-        //         no.setAttribute("cx",node.left.x - rate);
-                
-        //         setTimeout(() => {
-        //             const idlinha = id + 'l';
-        //             const linha = document.getElementById(idlinha);
-        //             //console.log(linha);
-        //             linha.setAttribute("x2",node.left.x - rate);
-        //             setTimeout(() => {
-        //                 const idtexto = node.left.number + 't';
-        //                 const texto = document.getElementById(idtexto);
-        //                 texto.setAttribute("x",node.left.x - rate);
-        //                 node.left.x -=rate;
-        //             }, 20);
-        //         }, 20);
-        //     }, 50);
-            
-        //     }
-        //     if(node.right !== null){
-        //     setTimeout(() => {
-        //         const n = node.right.number;
-        //         const id = n + 'c';
-        //         const no = document.getElementById(id);
-        //         no.setAttribute("cx",node.right.x + rate);
-        //         setTimeout(() => {
-        //             const idlinha = id + 'r';
-        //             const linha = document.getElementById(idlinha);
-        //             //console.log(linha);
-        //             linha.setAttribute("x2",node.right.x + rate);
-        //             setTimeout(() => {
-        //                 const idtexto = node.right.number + 't';
-        //                 const texto = document.getElementById(idtexto);
-        //                 texto.setAttribute("x",node.right.x + rate);
-        //                 node.right.x -=rate;
-        //             }, 20);
-        //         }, 20);                
-        //     }, 100);
-        //     }
-        //     if(node.left !== null)queue.push(node.left);
-        //     if(node.right !== null)queue.push(node.right);
-        //     }else
-        //     {
-        //         //console.log("updateroot fora de ROOT");
-        //         //console.log("olhando para:",node);
-        //         if(node.left !== null){
-        //         setTimeout(() => {
-        //             const n = node.left.number;
-        //             const id = n + 'c';
-        //             const no = document.getElementById(id);
-        //             //console.log(no);
-        //             no.setAttribute("cx",node.x - node.distance);
-        //             setTimeout(() => {
-        //                 const idlinha = id + 'l';
-        //                 const linha = document.getElementById(idlinha);
-        //                 //console.log(linha);
-        //                 //linha.setAttribute("x1",node)
-        //                 linha.setAttribute("x1",node.x - 5);
-        //                 linha.setAttribute("x2",node.left.x);
-        //                 setTimeout(() => {
-        //                     const idtexto = node.left.number + 't';
-        //                     const texto = document.getElementById(idtexto);
-        //                     texto.setAttribute("x",node.x - node.distance);
-        //                     node.left.x -= node.distance;
-        //                 }, 20);
-        //             }, 20);
-        //         }, 50);
-                
-
-        //         }
-        //         if(node.right === null)return;
-        //         setTimeout(() => {
-        //             const n = node.right.number;
-        //             const id = n + 'c';
-        //             const no = document.getElementById(id);
-        //             no.setAttribute("cx",node.x + node.distance);
-        //             setTimeout(() => {
-        //                 const idlinha = id + 'r';
-        //                 const linha = document.getElementById(idlinha);
-        //                 //console.log(linha);
-        //                 linha.setAttribute("x1",node.x + 5);
-        //                 linha.setAttribute("x2",node.right.x);
-        //                 setTimeout(() => {
-        //                     const idtexto = node.right.number + 't';
-        //                     const texto = document.getElementById(idtexto);
-        //                     texto.setAttribute("x",node.x + node.distance);
-        //                     node.right.x += node.distance;
-        //                 }, 20);
-        //             }, 20);                
-        //         }, 100); 
-                
-
-
-        //     }
-        //     if(node.left !== null)queue.push(node.left);
-        //     if(node.right !== null)queue.push(node.right);
-            
-        // }
-
-    //}
+        if(ROOT === null)
+        {
+            document.getElementById("message").innerText = "The value is NOT in the tree (the tree is currently empty)";
+            return;
+        }
         
+        search(value);
+
+
+
+
+    }
+
+
+    ////////////////SEARCH OPERATION ///////////////////
+    const search = (value) =>{
+
+        let current = ROOT;
+
+        const sequence = [];
+        let inTree = false;
+
+        document.getElementById("message").innerText = `Searching for ${value} in the tree.`;
+
+        while(current !== null)
+        {
+            sequence.push(current);
+
+            if(value < current.value)
+            {
+                if(current.left === null)
+                {
+                    inTree = false;
+                    break;
+                }
+                current = current.left;
+            }else if(value > current.value)
+            {
+                if(current.right === null)
+                {
+                    inTree = false;
+                    break;
+                }
+                current = current.right;
+                
+            }else if(value === current.value)
+            {
+                inTree = true;
+                break;
+            }
+        }
+
+        AnimateSearch(sequence,inTree);
+        return sequence;
+
+    }
+
+
+    const AnimateSearch = (sequence,inTree) =>{
+
+
+        searchButton.disabled = true;
+    
+        for(let i = 0;i<sequence.length;i++)
+        {
+            setTimeout(() => {
+                
+                const n = sequence[i].number;
+                const id = `${n}c`;
+                const node = document.getElementById(id);
+                node.setAttribute("style","fill:white; stroke:#e8b315; stroke-width: 1.5;");
+                
+                setTimeout(() => {
+                    node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
+                }, INSERTION_SEQUENCE_SPEED);
+
+            }, INSERTION_SEQUENCE_SPEED*(i));
+        }
+
+        setTimeout(() => {
+            
+            if(inTree)
+            {
+                const n = sequence[sequence.length - 1].number;
+                const id = `${n}c`;
+                const node = document.getElementById(id);
+                node.setAttribute("style","fill:white; stroke:#497549; stroke-width: 2.0;");
+
+                setTimeout(() => {
+                    node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
+                    document.getElementById("message").innerText = "The value is in the tree.";
+                    searchButton.disabled = false;
+                }, INSERTION_SEQUENCE_SPEED/2);
+
+            }else
+            {
+                const n = sequence[sequence.length - 1].number;
+                const id = `${n}c`;
+                const node = document.getElementById(id);
+                node.setAttribute("style","fill:white; stroke:#d60019; stroke-width: 2.0;");
+                setTimeout(() => {
+                    node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
+                    document.getElementById("message").innerText = "The value is NOT in the tree.";
+                    searchButton.disabled = false;
+                }, INSERTION_SEQUENCE_SPEED/2);
+
+            }
+
+        }, INSERTION_SEQUENCE_SPEED*sequence.length + 200);
+
+    }
+
+
+    const erase = () =>{
+
+        deleteSequence = [];
+        const input = document.getElementById("inputdelete");
+        if(input.value === "")return;
+
+        const value = parseInt(input.value);
+
+        if(ROOT === null)return;
+
+
+        const sequence = search(value);
+        
+        setTimeout(() => {
+            if(sequence[sequence.length - 1].value === value)
+                
+            ROOT = deletion(ROOT,value);
+            //console.log(ROOT);
+            //console.log(deleteSequence);
+            setTimeout(() => {
+                AnimateDeletion();
+            }, 100);
+        }, INSERTION_SEQUENCE_SPEED*sequence.length + 500);
+
+    }
+
+
+    const AnimateDeletion = () =>{
+
+        for(let i = 0;i<deleteSequence.length;i++)
+        {
+            setTimeout(() => {
+                const step = deleteSequence[i];
+
+                if(step.op === "NLR")
+                {
+
+
+                    let id = step.number;
+                    id = `${id}c`;
+                    const circle = document.getElementById(id);
+                    circle.remove();
+                    const idtexto = `${step.number}t`;
+                    const texto = document.getElementById(idtexto);
+                    texto.remove();
+
+                    if(step.isroot)
+                    {
+                        ROOT = null;
+                    }else
+                    {
+                    let idlinha = "";
+                    if(step.path === "right")
+                    {
+                        idlinha = `${step.number}cr`;
+                    }else
+                    {
+                        idlinha = `${step.number}cl`;
+                    }
+                    const linha = document.getElementById(idlinha);
+                    linha.remove();
+                    }
+                }else if(step.op === "NR" || step.op === "NL")
+                {
+                    let id = `${step.number}c`;
+                    const circle = document.getElementById(id);
+                    circle.remove();
+                    let idtexto = `${step.number}t`;
+                    const text = document.getElementById(idtexto);
+                    text.remove();
+                    if(step.op === "NR")
+                    {
+                        let idlinha = `${step.child.number}cl`;
+                        const linha = document.getElementById(idlinha);
+                        linha.remove();
+                    }else{
+                        let idlinha = `${step.child.number}cr`;
+                        const linha = document.getElementById(idlinha);
+                        linha.remove();
+                    }
+
+                    //update position of node
+                    
+                    step.child.x = step.x;
+                    step.child.y = step.y;
+
+                    let id2 = `${step.child.number}c`;
+                    const circle2 = document.getElementById(id2);
+                    circle2.setAttribute("cx",`${step.x}`);
+                    circle2.setAttribute("cy",`${step.y}`);
+
+                    let idtexto2 = `${step.child.number}t`;
+                    const text2 = document.getElementById(idtexto2);
+                    text2.setAttribute("x",`${step.x}`);
+                    text2.setAttribute("y",`${step.y + 1}`);
+                    text2.setAttribute("id",`${step.child.number}t`);
+
+                    let idlinha = "";
+                    console.log("step.parent.left.value = ",step.parent.left.value)
+                    console.log("step.value = ",step.value);
+                    if(step.path === "left")
+                    {
+                        idlinha = `${step.number}cl`;
+                        const l = document.getElementById(idlinha);
+                        l.setAttribute("id",`${step.child.number}cl`);
+                    }else
+                    {
+                         idlinha = `${step.number}cr`;
+                         const l = document.getElementById(idlinha);
+                         l.setAttribute("id",`${step.child.number}cr`)
+                    }
+                    
+
+                    //update position of other nodes
+                    setTimeout(() => {
+                        UpdatePositions(step.child);    
+                    }, 200);
+                    
+
+                }else if(step.op === "TN")
+                {
+                    let idtexto1 = `${step.node.number}t`;
+                    const text1 = document.getElementById(idtexto1);
+                    text1.remove();
+
+                    let idtexto2 = `${step.current.number}t`;
+                    const text2 = document.getElementById(idtexto2);
+                    text2.remove();
+
+                    let texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+                    texto.setAttributeNS(null,"x",`${step.node.x}`);
+                    texto.setAttributeNS(null,"y",`${step.node.y + 1}`);
+                    texto.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em");
+                    texto.textContent = `${step.current.value}`;
+                    texto.setAttribute("class","texto");
+                    texto.setAttribute("id",`${step.node.number}t`);
+                    svgref.current.appendChild(texto);    
+                    
+
+                    texto = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+                    texto.setAttributeNS(null,"x",`${step.current.x}`);
+                    texto.setAttributeNS(null,"y",`${step.current.y + 1}`);
+                    texto.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em");
+                    texto.textContent = `${step.node.value}`;
+                    texto.setAttribute("class","texto");
+                    texto.setAttribute("id",`${step.current.number}t`);
+                    setTimeout(() => {
+                        svgref.current.appendChild(texto);    
+                    }, 50);
+
+
+                }
+
+
+            }, INSERTION_SEQUENCE_SPEED*i);
+
+        }
+
+
+
+    }
+
+    const UpdatePositions = (node) =>{
+
+        const queue = [];
+        queue.push(node);
+
+        while(queue.length > 0)
+        {
+            const current = queue.shift();
+            console.log("atual:",current);
+            //console.log("current:",current);
+            if(current.left !== null)
+            {
+                setTimeout(() => {
+                    const n = current.left.number;
+                    const id = n + 'c';
+                    const no = document.getElementById(id);
+                    no.setAttribute("cx",current.x - current.leftdistance);
+                    current.left.x = current.x - current.leftdistance;
+
+
+                    const idlinha = id + 'l';
+                    const linha = document.getElementById(idlinha);
+                    linha.setAttribute("x1",current.x - 5);
+                    linha.setAttribute("x2",current.x - current.leftdistance);
+                    //console.log(linha);
+                           
+                    const idtexto = current.left.number + 't';
+                    const texto = document.getElementById(idtexto);
+                    texto.setAttribute("x",current.x - current.leftdistance);
+                }, 100);
+            }
+
+            if(current.right !== null)
+            {
+                setTimeout(() => {
+                    const n = current.right.number;
+                    const id = n + 'c';
+                    const no = document.getElementById(id);
+                    no.setAttribute("cx",current.x + current.rightdistance);
+                    current.right.x = current.x + current.rightdistance;
+
+                    const idlinha = id + 'r';
+                    const linha = document.getElementById(idlinha);
+                    linha.setAttribute("x1",current.x + 5);
+                    linha.setAttribute("x2",current.x + current.rightdistance);
+                           
+                    const idtexto = current.right.number + 't';
+                    const texto = document.getElementById(idtexto);
+                    texto.setAttribute("x",current.x + current.rightdistance);
+                }, 100);
+
+            }
+
+
+            if(current.left !== null)queue.push(current.left);
+            if(current.right !== null)queue.push(current.right);
+        }
+
+    }
+
+
+    ////////DELETION OPERATION /////////////////////
+    const deletion = (node,value) =>{
+
+        if(node === null)return;
+
+        //console.log("olhando para:",node);
+
+        if(value < node.value)
+            node.left = deletion(node.left,value);
+        
+        else if(value > node.value)
+            node.right = deletion(node.right,value);
+        
+        else
+        {
+            if(node.left === null && node.right === null)
+            {
+                console.log("no sem filhos:",node);
+
+                //deleting a node with no children
+                const path = (node.parent.left === node ? "left" : "right");
+                deleteSequence.push({"op":"NLR","number":node.number,"parent":node.parent,"isroot":node.isROOT,"path":path});
+                return null;
+            }else if(node.left === null)
+            {
+                //console.log("no sem filho a esquerda:",node);
+
+                //deleting a node with only one child
+                const path = (node.parent.left === node ? "left" : "right");
+                deleteSequence.push({"op":"NL","number":node.number,"parent":node.parent,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.right.x,"yc":node.right.y,"child":node.right,"value":node.value,"path":path});
+                return node.right;
+                
+            }else if(node.right === null)
+            {
+                //console.log("no sem filho a direita:",node);
+
+                //deleting a node with only one child
+                const path = (node.parent.left === node ? "left" : "right");
+                deleteSequence.push({"op":"NR","number":node.number,"parent":node.parent,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.left.x,"yc":node.left.y,"child":node.left,"value":node.value,"path":path});
+
+                return node.left;
+            }
+
+            //deleting a node with two children
+            //console.log("no com dois filhos:",node);
+
+            //get inorder successor
+            let current = node.right;
+            while(current !== null && current.left !== null)
+            {
+                current = current.left;
+            }
+
+            console.log("in order successor:",current);
+
+            deleteSequence.push({"op":"TN","node":node,"current":current});
+            node.value = current.value;
+
+            //delete inorder successor
+            node.right = deletion(node.right,current.value);
+        }
+        
+            return node;
+        
+    }
+
+
+        //In order traversal just for debugging
+        const traversal = (current) =>{
+
+            if(current !== null)
+            {
+                traversal(current.left);
+                console.log(current.value);
+                traversal(current.right);
+            }
+        }
+
+        const changeAnimationSpeed = (value) =>{
+
+            value = parseInt(value);
+            let real = 0;
+            if(value < 1000)
+            {
+                real = value - 500;
+                real = 1500 - real;
+            }
+            if(value > 1000)
+            {
+                real = 1500 - value;
+                real = 500 + real;
+            }
+            INSERTION_SEQUENCE_SPEED = real; 
+
+        }
 
 
           useEffect(()=>{
-            svgref.current.style.border = "1px solid black";
+            svgref.current.style.border = "1px solid #254569";
+            svgref.current.style.borderRadius = "0.3vw";
             svgref.current.style.width = "98vw";
-            svgref.current.style.height = "79vh";
+            svgref.current.style.height = "70vh";
             
 
             //to do: Save current tree on local storage so that if the user leaves the page
@@ -617,8 +1218,8 @@ const BinaryTree = () => {
             //////Implementation of zoom in and zoom out///////////////////
             //Taken from https://stackoverflow.com/a/52640900/17213802
             //changed a little bit to fit this project
-            //also the variables svgref and svgContainer are references to their respective html elements
-            //the reference is used with useRef hook
+            //the variables svgref and svgContainer are references to their respective html elements
+            //the reference is created with useRef hook
             // let viewBox = {x:0,y:0,w:svgref.current.clientWidth,h:svgref.current.clientHeight};
             let viewBox = {x:0,y:0,w:100,h:100};
             svgref.current.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
@@ -676,11 +1277,43 @@ const BinaryTree = () => {
         
              ///////end of zoom in and zoom out implementation/////////////////////
         
-            svgref.current.style.backgroundColor = "#4d6894";
-        
+            // svgref.current.style.backgroundColor = "#4d6894";
+            
+            //restricts input to only integers less than 99999
+            //taken from https://stackoverflow.com/a/469362
+            function setInputFilter(textbox, inputFilter) {
+                ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+                textbox.addEventListener(event, function() {
+                    if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                    this.value = "";
+                    }
+                });
+                });
+            }
+
+            setInputFilter(document.getElementById("input"), function(value) {
+                return /^\d*$/.test(value) && (value === "" || ( parseInt(value) >= 1 && parseInt(value) <= 99999)); });
+
+            setInputFilter(document.getElementById("inputsearch"), function(value) {
+                return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 99999); });
+                
+
+            insertButton = document.getElementById("insertButton");
+            searchButton = document.getElementById("searchButton");
+
+           
+
             },[]);  
           
 
+    
 
 
     
@@ -688,8 +1321,32 @@ const BinaryTree = () => {
         <div className = "BinaryTree">
             
             <div id="info">
-                <input type="text" id = "input" placeholder='Try adding a number'/>
-                <button id="botao" onClick = {add}>Add</button>
+                <p></p>
+                <div><h1 id = "name">Binary Search Tree</h1></div>
+                
+                <div id = "opBST">
+                    <div>
+                        <p style = {{margin:"0 auto"}}> &nbsp; Animation speed:</p>
+                        <input type="range" min="500" max="1500" defaultValue="1000" onChange={(e)=>changeAnimationSpeed(e.target.value)}></input>
+                    </div>
+                    <p>&nbsp;</p>
+                    <div> <input type="text" id = "input" placeholder='Try adding a number'/>
+                    <button id="insertButton" onClick = {add}>Insert</button></div>
+                    <p>&nbsp;</p>
+                    <div> <input type="text" id = "inputsearch" placeholder='Seach for a number'/>
+                    <button id="searchButton" onClick = {look}>Search</button></div>
+                    <p>&nbsp;</p>
+                    <div> <input type="text" id = "inputdelete" placeholder='Delete a number'/>
+                    <button id="searchButton" onClick = {erase}>Delete</button></div>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <div>
+                        <p>Use the mouse scroll to zoom in and out.</p>
+                    </div>
+                </div>
+                <p id = "message"></p>
+                
+
                 {/* <h2>Zoom in and out using the mouse scroll, click and drag to move the tree</h2> */}
             </div>
 

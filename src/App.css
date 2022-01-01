@@ -1,5 +1,5 @@
 body{
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -13,34 +13,63 @@ body{
   align-items: center;
 }
 
+#name{
 
-#input,#botao{
-  padding: 0.5vw;
+  font-size: 3vw;
+  margin:"0 auto";
+  font-weight: 800;
+  
+
 }
-
-#input{
-  height: 30%;
-  width: 30%;
-}
-
-#botao{
-  height: 45%;
-}
-
 
 
 #info{
-  width: 100%;
-  height: 20vh;
+  width: 98%;
+  height: 25vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-left: 1.5vw;
+}
+
+#info p{
+  color: #254569;
+}
+
+#opBST{
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+}
+
+#opBST input{
+  width: 10vw;
+  height: 3vh;
+  padding: 0.3vw;
+  border-style: none;
+  border: 0.1vw solid #254569;
+}
+
+#opBST button{
+  width: 5vw;
+  height: 2.3vw;
+  color: white;
+  border-style: none;
+  background-color: #254569;
+  border-radius: 0.3vw;
+  cursor: pointer;
+
+}
+
+#opBST button:disabled{
+  background-color: grey;
+  cursor:default;
 }
 
 .circulo{
 
-  transition: all 1s ease;
+  transition: all 0.7s ease-out;
   animation-duration: 0.7s;
   animation-iteration-count: 1;
   animation-name: criaNode;
@@ -62,6 +91,7 @@ body{
 }
 
 .texto{
+  transition: all 3s ease;
   animation-duration: 0.7s;
   animation-iteration-count: 1;
   animation-name: criaTexto;
@@ -84,10 +114,11 @@ body{
 
 
 .linha{
-
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: move 5s linear;   
+  
+  transition: all 10s ease;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: move 10s linear;   
   animation-fill-mode: forwards; 
 
 }
