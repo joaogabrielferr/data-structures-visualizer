@@ -14,6 +14,7 @@ const BinaryTree = () => {
     let MAX_LEVEL = 0;
     let insertButton = null;
     let searchButton = null;
+    let deleteButton = null;
     const UPDATE_RATE = 15; //distance a node will move away from other
     const DEFAULT_DISTANCE = 12; //default distance in x between a parent and its children
     const DIFF_FROM_ROOT = 30;
@@ -96,7 +97,7 @@ const BinaryTree = () => {
             //values x and y for the root is always 50 and 10
             //for the others ones the position is based on the parent position
             node.x = 50;
-            node.y = 10;
+            node.y = 20;
             node.isROOT = true;
             node.number = ++NODE_COUNTER;
             node.level = level;
@@ -105,7 +106,7 @@ const BinaryTree = () => {
 
             AnimateInsertion(node,"ROOT",null);
                        
-            
+            document.getElementById("message").innerText = "ROOT inserted into the tree.";
 
         //not a root so set the positon based on parent's 
         }else if(node.value < y.value)
@@ -127,6 +128,8 @@ const BinaryTree = () => {
 
 
             insertButton.disabled = true;
+            searchButton.disabled = true;
+            deleteButton.disabled = true;
 
             //first animate the sequence of nodes, then animate the insertion of the new node
 
@@ -136,6 +139,8 @@ const BinaryTree = () => {
             
                 AnimateInsertion(node,"L",y);
                 insertButton.disabled = false;
+                searchButton.disabled = false;
+                deleteButton.disabled = false;
                 document.getElementById("message").innerText = "";
             }, (sequence.length)*INSERTION_SEQUENCE_SPEED  + 100 );
             
@@ -162,6 +167,8 @@ const BinaryTree = () => {
 
 
             insertButton.disabled = true;
+            searchButton.disabled = true;
+            deleteButton.disabled = true;
 
             AnimateSequence(sequence);
 
@@ -169,6 +176,8 @@ const BinaryTree = () => {
 
                 AnimateInsertion(node,"R",y);
                 insertButton.disabled = false;
+                searchButton.disabled = false;
+                deleteButton.disabled = false;
                 document.getElementById("message").innerText = "";
             }, (sequence.length)*INSERTION_SEQUENCE_SPEED + 100);
 
@@ -229,7 +238,8 @@ const BinaryTree = () => {
             }
 
             //if the node is the first in its level nothing needs to be done
-            if(index < 1)return;
+            if(index === -1 || index < 1)return;
+            if(niveis[node.level][index-1].x < ROOT.x)return;
 
             //find lowest common ancestor between niveis[node.level][index-1] and niveis[node.level][index]
             AdjustLeft_left_root(LowestCommonAncestor(ROOT,niveis[node.level][index-1].value,niveis[node.level][index].value));
@@ -257,6 +267,7 @@ const BinaryTree = () => {
 
             //if the node is the last in its level nothing needs to be done
             if(index === -1 || index === niveis[node.level].length - 1)return;
+            if(niveis[node.level][index+1].x > ROOT.x)return;
 
             AdjustRight_right_root(LowestCommonAncestor(ROOT,niveis[node.level][index+1].value,niveis[node.level][index].value));
            
@@ -462,6 +473,18 @@ const BinaryTree = () => {
 
         if(direction === "ROOT")
         {
+
+            const textoroot = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+            textoroot.setAttributeNS(null,"x",`${node.x}`);
+            textoroot.setAttributeNS(null,"y",`${node.y - 10}`);
+            textoroot.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em");
+            textoroot.textContent = `ROOT`;
+            textoroot.setAttribute("class","texto");
+            setTimeout(() => {
+                svgref.current.appendChild(textoroot);    
+            }, 300);
+            
+
             let circulo = document.createElementNS("http://www.w3.org/2000/svg" ,'circle');
             circulo.setAttributeNS(null,"cx",`${node.x}`);
             circulo.setAttributeNS(null,"cy",`${node.y}`);
@@ -550,6 +573,8 @@ const BinaryTree = () => {
                 
                     nodesToAdjust = [...new Set(nodesToAdjust)];
 
+
+                console.log("nodes to adjust:",nodesToAdjust);
                 for(let i = nodesToAdjust.length - 1;i>=0;i--)
                 {
                     PulltoLeft(nodesToAdjust[i]);
@@ -588,7 +613,7 @@ const BinaryTree = () => {
                         PulltoRight(ROOT);
                     }
 
-                    let aux = node;
+                    let aux = node.parent;
                     while(aux.parent.right !== aux)
                     {
                         aux = aux.parent;
@@ -602,7 +627,7 @@ const BinaryTree = () => {
                     
                     aux = aux.parent;
 
-                    if(aux !== ROOT && aux.parent !== null){
+                    if(aux !== ROOT){
                     while(aux.parent.right !== aux)
                     {
                         if(aux.parent === ROOT)break;
@@ -612,6 +637,11 @@ const BinaryTree = () => {
                         AdjustRight_right_root(aux.parent); 
                     }
                     AdjustLeft_left_root(node);
+
+                    nodesToAdjust = [...new Set(nodesToAdjust)];
+
+
+                    console.log("nodes to adjust:",nodesToAdjust);
 
 
                     for(let i = nodesToAdjust.length - 1;i>=0;i--)
@@ -690,6 +720,9 @@ const BinaryTree = () => {
                     
                     nodesToAdjust = [...new Set(nodesToAdjust)];
 
+                    
+                    console.log("nodes to adjust:",nodesToAdjust);
+
                 for(let i = nodesToAdjust.length - 1;i>=0;i--)
                 {
                     PulltoRight(nodesToAdjust[i]);
@@ -724,8 +757,8 @@ const BinaryTree = () => {
                     {
                         PulltoLeft(ROOT);
                     }
-
-                    let aux = node;
+                    
+                    let aux = node.parent;
                     while(aux.parent.left !== aux)
                     {
                         aux = aux.parent;
@@ -749,6 +782,11 @@ const BinaryTree = () => {
                         AdjustLeft_left_root(aux.parent); 
                     }
                     AdjustRight_right_root(node);
+
+
+                    nodesToAdjust = [...new Set(nodesToAdjust)];
+
+                    console.log("nodes to adjust:",nodesToAdjust);
 
 
                     for(let i = nodesToAdjust.length - 1;i>=0;i--)
@@ -833,6 +871,8 @@ const BinaryTree = () => {
 
 
         searchButton.disabled = true;
+        insertButton.disabled = true;
+        deleteButton.disabled = true;
     
         for(let i = 0;i<sequence.length;i++)
         {
@@ -863,6 +903,8 @@ const BinaryTree = () => {
                     node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
                     document.getElementById("message").innerText = "The value is in the tree.";
                     searchButton.disabled = false;
+                    insertButton.disabled = false;
+                    deleteButton.disabled = false;
                 }, INSERTION_SEQUENCE_SPEED/2);
 
             }else
@@ -875,6 +917,8 @@ const BinaryTree = () => {
                     node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
                     document.getElementById("message").innerText = "The value is NOT in the tree.";
                     searchButton.disabled = false;
+                    insertButton.disabled = false;
+                    deleteButton.disabled = false;
                 }, INSERTION_SEQUENCE_SPEED/2);
 
             }
@@ -905,7 +949,7 @@ const BinaryTree = () => {
             //console.log(deleteSequence);
             setTimeout(() => {
                 AnimateDeletion();
-            }, 100);
+            }, 200);
         }, INSERTION_SEQUENCE_SPEED*sequence.length + 500);
 
     }
@@ -932,7 +976,7 @@ const BinaryTree = () => {
 
                     if(step.isroot)
                     {
-                        ROOT = null;
+                        //ROOT = null;
                     }else
                     {
                     let idlinha = "";
@@ -948,6 +992,7 @@ const BinaryTree = () => {
                     }
                 }else if(step.op === "NR" || step.op === "NL")
                 {
+                    console.log("TESTE");
                     let id = `${step.number}c`;
                     const circle = document.getElementById(id);
                     circle.remove();
@@ -982,18 +1027,17 @@ const BinaryTree = () => {
                     text2.setAttribute("id",`${step.child.number}t`);
 
                     let idlinha = "";
-                    console.log("step.parent.left.value = ",step.parent.left.value)
-                    console.log("step.value = ",step.value);
-                    if(step.path === "left")
+                    
+                    if(!step.isroot && step.path === "left")
                     {
                         idlinha = `${step.number}cl`;
                         const l = document.getElementById(idlinha);
                         l.setAttribute("id",`${step.child.number}cl`);
-                    }else
+                    }else if(!step.isroot && step.path === "right")
                     {
                          idlinha = `${step.number}cr`;
                          const l = document.getElementById(idlinha);
-                         l.setAttribute("id",`${step.child.number}cr`)
+                         l.setAttribute("id",`${step.child.number}cr`) 
                     }
                     
 
@@ -1063,18 +1107,22 @@ const BinaryTree = () => {
                     const id = n + 'c';
                     const no = document.getElementById(id);
                     no.setAttribute("cx",current.x - current.leftdistance);
+                    no.setAttribute("cy",current.y + 20);
                     current.left.x = current.x - current.leftdistance;
-
+                    current.left.y = current.y + 20;
 
                     const idlinha = id + 'l';
                     const linha = document.getElementById(idlinha);
                     linha.setAttribute("x1",current.x - 5);
+                    linha.setAttribute("y1",current.y + 5);
                     linha.setAttribute("x2",current.x - current.leftdistance);
+                    linha.setAttribute("y2",current.y +20);
                     //console.log(linha);
                            
                     const idtexto = current.left.number + 't';
                     const texto = document.getElementById(idtexto);
                     texto.setAttribute("x",current.x - current.leftdistance);
+                    texto.setAttribute("y",current.y + 20);
                 }, 100);
             }
 
@@ -1085,16 +1133,21 @@ const BinaryTree = () => {
                     const id = n + 'c';
                     const no = document.getElementById(id);
                     no.setAttribute("cx",current.x + current.rightdistance);
+                    no.setAttribute("cy",current.y + 20);
                     current.right.x = current.x + current.rightdistance;
+                    current.right.y = current.y + 20;
 
                     const idlinha = id + 'r';
                     const linha = document.getElementById(idlinha);
                     linha.setAttribute("x1",current.x + 5);
+                    linha.setAttribute("y1",current.y + 5);
                     linha.setAttribute("x2",current.x + current.rightdistance);
+                    linha.setAttribute("y2",current.y + 20);
                            
                     const idtexto = current.right.number + 't';
                     const texto = document.getElementById(idtexto);
                     texto.setAttribute("x",current.x + current.rightdistance);
+                    texto.setAttribute("y",current.y + 20);
                 }, 100);
 
             }
@@ -1112,7 +1165,14 @@ const BinaryTree = () => {
 
         if(node === null)return;
 
-        //console.log("olhando para:",node);
+
+        const index = insertionSoFar.indexOf(value);
+        if(index > - 1)
+        {
+            insertionSoFar.splice(index,1);
+        }
+
+        console.log("olhando para:",node);
 
         if(value < node.value)
             node.left = deletion(node.left,value);
@@ -1126,6 +1186,12 @@ const BinaryTree = () => {
             {
                 console.log("no sem filhos:",node);
 
+                if(node.isROOT)
+                {
+                    deleteSequence.push({"op":"NLR","number":node.number,"isroot":node.isROOT});
+                    return null;
+                }
+
                 //deleting a node with no children
                 const path = (node.parent.left === node ? "left" : "right");
                 deleteSequence.push({"op":"NLR","number":node.number,"parent":node.parent,"isroot":node.isROOT,"path":path});
@@ -1135,19 +1201,72 @@ const BinaryTree = () => {
                 //console.log("no sem filho a esquerda:",node);
 
                 //deleting a node with only one child
-                const path = (node.parent.left === node ? "left" : "right");
-                deleteSequence.push({"op":"NL","number":node.number,"parent":node.parent,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.right.x,"yc":node.right.y,"child":node.right,"value":node.value,"path":path});
-                return node.right;
+                if(node.isROOT)
+                {
+                    console.log(node);
+                    console.log("no sem filho a esquerda:",node);
+                    deleteSequence.push({"op":"NL","number":node.number,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.right.x,"yc":node.right.y,"child":node.right,"value":node.value});
+                    node.right.isROOT = true;
+                    return node.right;
+                }else{
+
+                    const path = (node.parent.left === node ? "left" : "right");
+                    deleteSequence.push({"op":"NL","number":node.number,"parent":node.parent,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.right.x,"yc":node.right.y,"child":node.right,"value":node.value,"path":path});
                 
+                if(node.parent.left === node)
+                {
+                    node.right.parent = node.parent;
+                    node.parent.left = node.right;
+                }
+                if(node.parent.right === node)
+                {
+                    node.right.parent = node.parent;
+                    node.parent.right = node.right;
+                }
+                
+                return node.right;
+                }
             }else if(node.right === null)
             {
                 //console.log("no sem filho a direita:",node);
 
                 //deleting a node with only one child
-                const path = (node.parent.left === node ? "left" : "right");
-                deleteSequence.push({"op":"NR","number":node.number,"parent":node.parent,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.left.x,"yc":node.left.y,"child":node.left,"value":node.value,"path":path});
+                if(node.isROOT)
+                {
+                    console.log(node);
+                    console.log("no sem filho a direita:",node);
+                    console.log(node.x);
+                    const obj = {"op":"NR",
+                    "number":node.number,
+                    "isroot":node.isROOT,
+                    "x":node.x,
+                    "y":node.y,
+                    "xc":node.left.x,
+                    "yc":node.left.y,"child":node.left,"value":node.value}
+                    
+                    deleteSequence.push(obj);
+                    node.left.isROOT = true;
+                    return node.left;
+                }else{
+                
+                    const path = (node.parent.left === node ? "left" : "right");
+                    deleteSequence.push({"op":"NR","number":node.number,"parent":node.parent,"isroot":node.isROOT,"x":node.x,"y":node.y,"xc":node.left.x,"yc":node.left.y,"child":node.left,"value":node.value,"path":path});
 
+                    if(node.parent.left === node)
+                    {
+                        node.left.parent = node.parent;
+                        node.parent.left = node.left;
+                    }
+                    if(node.parent.right === node)
+                    {
+                        node.left.parent = node.parent;
+                        node.parent.right = node.left;
+                    }
+
+                   
                 return node.left;
+                }
+                
             }
 
             //deleting a node with two children
@@ -1307,6 +1426,7 @@ const BinaryTree = () => {
 
             insertButton = document.getElementById("insertButton");
             searchButton = document.getElementById("searchButton");
+            deleteButton = document.getElementById("deleteButton");
 
            
 
@@ -1337,7 +1457,7 @@ const BinaryTree = () => {
                     <button id="searchButton" onClick = {look}>Search</button></div>
                     <p>&nbsp;</p>
                     <div> <input type="text" id = "inputdelete" placeholder='Delete a number'/>
-                    <button id="searchButton" onClick = {erase}>Delete</button></div>
+                    <button id="deleteButton" onClick = {erase}>Delete</button></div>
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
                     <div>
