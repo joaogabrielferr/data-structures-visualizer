@@ -20,6 +20,8 @@ const BinaryTree = () => {
     const DIFF_FROM_ROOT = 30;
     let INSERTION_SEQUENCE_SPEED = 1000 // in ms //let because the user can change it
 
+    let zoom = 0;
+
     class Node{
 
         constructor(value)
@@ -58,7 +60,9 @@ const BinaryTree = () => {
         {
             if(insertionSoFar[i] === value)
             {
+                document.getElementById("message").style.color = "red";
                 document.getElementById("message").innerText = "Duplicate values are not allowed";
+
                 return;
             }
         }
@@ -194,7 +198,7 @@ const BinaryTree = () => {
                 const n = sequence[i].number;
                 const id = `${n}c`;
                 const node = document.getElementById(id);
-                node.setAttribute("style","fill:white; stroke:#497549; stroke-width: 1.5;");
+                node.setAttribute("style","fill:white; stroke:#2fd900; stroke-width: 1.5;");
                 
                 setTimeout(() => {
                     node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
@@ -215,7 +219,9 @@ const BinaryTree = () => {
         const input = document.getElementById("input");
         if(input.value === "")return;
         const valor = parseInt(input.value);
+        document.getElementById("message").style.color = "#254569";
         document.getElementById("message").innerText = `Inserting ${valor} into the tree.`;
+        document.getElementById("controls").innerText = "Use the mouse scroll to zoom in and out. Click and drag to move the tree."
         insert(valor);
     }
 
@@ -301,6 +307,7 @@ const BinaryTree = () => {
 
         const PulltoLeft = (node) =>{
 
+            console.log("em pull to left com node:",node);
             //first increase distance of left child, then update the position of all 
             //the nodes to the left
             if(node.x === null || node.left === null)return;
@@ -388,6 +395,7 @@ const BinaryTree = () => {
 
             //first increase distance of right child, then update the position of all 
             //the nodes to the left
+            console.log("em pull to right com node:",node);
             if(node.x === null || node.right === null)return;
             const n = node.right.number;
             const id = n + 'c';
@@ -604,14 +612,14 @@ const BinaryTree = () => {
 
                 setTimeout(() => {
                     
-                    if(index === 0 && niveis[node.level][index].x - ROOT.x < DIFF_FROM_ROOT)
-                    {
-                        PulltoRight(ROOT);
-                    }
-                    if(index !== 0 && niveis[node.level][index-1].x < ROOT.x && niveis[node.level][index].x - ROOT.x < DIFF_FROM_ROOT)
-                    {
-                        PulltoRight(ROOT);
-                    }
+                    // if(index === 0 && niveis[node.level][index].x - ROOT.x < DIFF_FROM_ROOT)
+                    // {
+                    //     PulltoRight(ROOT);
+                    // }
+                    // if(index !== 0 && niveis[node.level][index-1].x < ROOT.x && niveis[node.level][index].x - ROOT.x < DIFF_FROM_ROOT)
+                    // {
+                    //     PulltoRight(ROOT);
+                    // }
 
                     let aux = node.parent;
                     while(aux.parent.right !== aux)
@@ -749,14 +757,14 @@ const BinaryTree = () => {
                 
                 setTimeout(() => {
 
-                    if(index === niveis[node.level].length - 1 && ROOT.x - niveis[node.level][index].x < DIFF_FROM_ROOT)
-                    {
-                        PulltoLeft(ROOT);
-                    }
-                    if(index < niveis[node.level].length - 1 && niveis[node.level][index+1].x > ROOT.x && ROOT.x - niveis[node.level][index].x < DIFF_FROM_ROOT)
-                    {
-                        PulltoLeft(ROOT);
-                    }
+                    // if(index === niveis[node.level].length - 1 && ROOT.x - niveis[node.level][index].x < DIFF_FROM_ROOT)
+                    // {
+                    //     PulltoLeft(ROOT);
+                    // }
+                    // if(index < niveis[node.level].length - 1 && niveis[node.level][index+1].x > ROOT.x && ROOT.x - niveis[node.level][index].x < DIFF_FROM_ROOT)
+                    // {
+                    //     PulltoLeft(ROOT);
+                    // }
                     
                     let aux = node.parent;
                     while(aux.parent.left !== aux)
@@ -830,7 +838,7 @@ const BinaryTree = () => {
 
         const sequence = [];
         let inTree = false;
-
+        document.getElementById("message").style.color = "#254569";
         document.getElementById("message").innerText = `Searching for ${value} in the tree.`;
 
         while(current !== null)
@@ -881,7 +889,7 @@ const BinaryTree = () => {
                 const n = sequence[i].number;
                 const id = `${n}c`;
                 const node = document.getElementById(id);
-                node.setAttribute("style","fill:white; stroke:#e8b315; stroke-width: 1.5;");
+                node.setAttribute("style","fill:white; stroke:#2fd900; stroke-width: 1.5;");
                 
                 setTimeout(() => {
                     node.setAttribute("style","fill:white; stroke:#254569; stroke-width: 1;");
@@ -940,10 +948,16 @@ const BinaryTree = () => {
 
 
         const sequence = search(value);
-        
-        setTimeout(() => {
-            if(sequence[sequence.length - 1].value === value)
-                
+        let index = -1;
+        if(sequence[sequence.length - 1].value === value)
+        {
+        setTimeout(() => {    
+            index = insertionSoFar.indexOf(value);
+            if(index > - 1)
+            {
+                insertionSoFar.splice(index,1);
+            }
+
             ROOT = deletion(ROOT,value);
             //console.log(ROOT);
             //console.log(deleteSequence);
@@ -951,7 +965,7 @@ const BinaryTree = () => {
                 AnimateDeletion();
             }, 200);
         }, INSERTION_SEQUENCE_SPEED*sequence.length + 500);
-
+        }
     }
 
 
@@ -1166,12 +1180,6 @@ const BinaryTree = () => {
         if(node === null)return;
 
 
-        const index = insertionSoFar.indexOf(value);
-        if(index > - 1)
-        {
-            insertionSoFar.splice(index,1);
-        }
-
         console.log("olhando para:",node);
 
         if(value < node.value)
@@ -1327,13 +1335,9 @@ const BinaryTree = () => {
             svgref.current.style.border = "1px solid #254569";
             svgref.current.style.borderRadius = "0.3vw";
             svgref.current.style.width = "98vw";
-            svgref.current.style.height = "70vh";
+            svgref.current.style.height = "68vh";
             
 
-            //to do: Save current tree on local storage so that if the user leaves the page
-            //when he comes back, the tree is still there
-
-        
             //////Implementation of zoom in and zoom out///////////////////
             //Taken from https://stackoverflow.com/a/52640900/17213802
             //changed a little bit to fit this project
@@ -1350,6 +1354,21 @@ const BinaryTree = () => {
         
             svgContainer.current.onmousewheel = function(e) {
                 e.preventDefault();
+
+                console.log("offset:",e.deltaY);
+
+                if(e.deltaY < 0)
+                {
+                    zoom--;
+                    console.log("aumenta zoom");
+                    document.getElementById("zoominfo").innerText = `Zoom: ${zoom}x`;
+                }else
+                {
+                    zoom++;
+                    console.log("diminui zoom");
+                    document.getElementById("zoominfo").innerText = `Zoom: ${zoom}x`; 
+                }
+
                 var w = viewBox.w;
                 var h = viewBox.h;
                 var mx = e.offsetX;//mouse x  
@@ -1418,7 +1437,7 @@ const BinaryTree = () => {
             }
 
             setInputFilter(document.getElementById("input"), function(value) {
-                return /^\d*$/.test(value) && (value === "" || ( parseInt(value) >= 1 && parseInt(value) <= 99999)); });
+                return /^\d*$/.test(value) && (value === "" || ( parseInt(value) >= 0 && parseInt(value) <= 99999)); });
 
             setInputFilter(document.getElementById("inputsearch"), function(value) {
                 return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 99999); });
@@ -1442,7 +1461,7 @@ const BinaryTree = () => {
             
             <div id="info">
                 <p></p>
-                <div><h1 id = "name">Binary Search Tree</h1></div>
+                <div id = "name"><h2>Binary Search Tree Visualization Tool</h2></div>
                 
                 <div id = "opBST">
                     <div>
@@ -1460,11 +1479,24 @@ const BinaryTree = () => {
                     <button id="deleteButton" onClick = {erase}>Delete</button></div>
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
-                    <div>
-                        <p>Use the mouse scroll to zoom in and out.</p>
-                    </div>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p id="zoominfo"></p>
                 </div>
-                <p id = "message"></p>
+                <div id = "messages">
+                        <div><p id = "controls">&nbsp;
+                        </p></div>
+                        <div><p id = "message"></p></div>
+                </div>
+                
                 
 
                 {/* <h2>Zoom in and out using the mouse scroll, click and drag to move the tree</h2> */}
@@ -1475,7 +1507,10 @@ const BinaryTree = () => {
 
                 </svg>
             </div>
-
+            <div id="footer">
+                João Gabriel &nbsp; <a href='https://github.com/joaogabrielferr' target={"_blank"}><i className="fab fa-github"></i></a>
+                &nbsp;<a href="https://www.linkedin.com/in/joaogabrielferr/" target={"_blank"}><i className="fab fa-linkedin"></i></a>  </div>
+                
         </div>
     )
 }

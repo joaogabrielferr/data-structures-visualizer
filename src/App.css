@@ -2,6 +2,11 @@ body{
   font-family: 'Poppins', sans-serif;
 }
 
+a, a:hover, a:focus, a:active{
+  text-decoration: none;
+  color: inherit;
+}
+
 
 .BinaryTree{
 
@@ -15,17 +20,25 @@ body{
 
 #name{
 
-  font-size: 3vw;
+  width: 100%;
+  font-size: 2vw;
   margin:"0 auto";
   font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #254569;
   
+}
 
+#svgcontainer{
+  margin-top: 2vh;
 }
 
 
 #info{
   width: 98%;
-  height: 25vh;
+  height: 22vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -43,28 +56,48 @@ body{
   align-items: center;
 }
 
+#messages{
+  width: 98%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 #opBST input{
-  width: 10vw;
-  height: 3vh;
-  padding: 0.3vw;
+  width: 15vw;
+  height: 3.5vh;
+  padding: 0.5vw;
   border-style: none;
   border: 0.1vw solid #254569;
 }
 
 #opBST button{
   width: 5vw;
-  height: 2.3vw;
+  height: 2.84vw;
   color: white;
   border-style: none;
   background-color: #254569;
-  border-radius: 0.3vw;
   cursor: pointer;
+  font-family: 'Poppins';
 
+
+}
+
+#opBST button:hover{
+  background-color: #1a314b;
 }
 
 #opBST button:disabled{
   background-color: grey;
   cursor:default;
+}
+
+#footer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: large;
 }
 
 .circulo{
