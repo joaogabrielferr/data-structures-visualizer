@@ -64,7 +64,7 @@ a, a:hover, a:focus, a:active{
   align-items: flex-start;
 }
 
-#opBST input{
+input{
   width: 15vw;
   height: 3.5vh;
   padding: 0.5vw;
@@ -72,7 +72,7 @@ a, a:hover, a:focus, a:active{
   border: 0.1vw solid #254569;
 }
 
-#opBST button{
+button{
   width: 5vw;
   height: 2.84vw;
   color: white;
@@ -84,11 +84,11 @@ a, a:hover, a:focus, a:active{
 
 }
 
-#opBST button:hover{
+button:hover{
   background-color: #1a314b;
 }
 
-#opBST button:disabled{
+button:disabled{
   background-color: grey;
   cursor:default;
 }
@@ -156,8 +156,64 @@ a, a:hover, a:focus, a:active{
 
 }
 
+.linhaStack{
+  
+  transition: all 10s ease;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: move 50s linear;   
+  animation-fill-mode: forwards; 
+
+}
+
+.rect{
+  transition: all 1s ease-out;
+}
+
 @keyframes move {
   100% {
       stroke-dashoffset: 0;
   }
+}
+
+
+
+.Stack{
+  margin-top: 1vh;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+#infostack{
+  width: 28vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#StackContainer{
+  display: flex;
+}
+
+#nameStack{
+  width: 100%;
+  font-size: 2vw;
+  margin:"0 auto";
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #254569;
+  text-align: center;
+}
+
+#popButton{
+  width: 21vw;
 }
