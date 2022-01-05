@@ -1461,7 +1461,8 @@ const BinaryTree = () => {
             
             <div id="info">
                 <p></p>
-                <div id = "name"><h2>Binary Search Tree Visualization Tool</h2></div>
+                <div id = "name"><h2>Binary Search Tree Visualization Tool</h2>
+                </div>
                 
                 <div id = "opBST">
                     <div>

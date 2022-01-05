@@ -85,6 +85,8 @@ const Stack = () => {
 
         svgref.current.append(rect);
 
+        document.getElementById("topStack").innerText = `TOP:${top}`;
+
         setTimeout(() => {
             
             const r = document.getElementById(id);
@@ -98,6 +100,15 @@ const Stack = () => {
             textoroot.textContent = `${value}`;
             textoroot.setAttribute("class","texto");
             textoroot.setAttribute("id",`${id}t`);
+            svgref.current.appendChild(textoroot);
+
+            textoroot = document.createElementNS("http://www.w3.org/2000/svg" ,'text');
+            textoroot.setAttributeNS(null,"x",`80`);
+            textoroot.setAttributeNS(null,"y",`${place + 16}`);
+            textoroot.setAttributeNS(null,"style","text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em");
+            textoroot.textContent = `${id - 1}`;
+            textoroot.setAttribute("class","texto");
+            textoroot.setAttribute("id",`${id}t_id`);
             svgref.current.appendChild(textoroot);
             
             setTimeout(() => {
@@ -167,12 +178,15 @@ const Stack = () => {
 
     const animatePop = (id) =>{
 
+        document.getElementById("topStack").innerText = `TOP:${top}`;
         popButton.disabled = true;
         pushButton.disabled = true;
         const rect = document.getElementById(id);
         const text = document.getElementById(`${id}t`);
+        const t_id = document.getElementById(`${id}t_id`);
         rect.setAttribute('y','-200');
         text.setAttribute('y','-200');
+        t_id.remove();
         place += 10;
         setTimeout(() => {
             rect.remove();
@@ -187,7 +201,7 @@ const Stack = () => {
 
      useEffect(() => {
         
-        svgref.current.style.border = "1px solid #254569";
+        // svgref.current.style.border = "1px solid #254569";
         svgref.current.style.borderRadius = "0.3vw";
         svgref.current.style.width = "70vw";
         svgref.current.style.height = "90vh";
@@ -285,12 +299,19 @@ const Stack = () => {
                     <p></p>
                     <button id = "popButton" onClick={pop}>Pop</button>
                 </div>
+                <div id="varStack">
+                    <h1 id = "topStack">TOP:-1</h1>
+                    <p>A stack is a data structure that stores the values in a linear sequence of items. There are two operations, Pop and Push, and they are performed in a LIFO order (Last In Firt Out). The items are stored one after another, and only the element at the top can be removed from the stack. Similarly, items can only be inserted in the top.</p>
+                    
+                </div>
             </div>
             <div id="svgcontainerStack" ref={svgContainer}>
                 <svg  xmlns="http://www.w3.org/2000/svg"  id = "svgStack" viewBox="0 0 100 100" ref={svgref}>
 
                 </svg>
             </div>
+
+
             </div>
             <div id="footer">
                 João Gabriel &nbsp; <a href='https://github.com/joaogabrielferr' target={"_blank"}><i className="fab fa-github"></i></a>

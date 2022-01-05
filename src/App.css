@@ -109,6 +109,8 @@ button:disabled{
   font-family: 'Roboto', sans-serif;
 }
 
+
+
 @keyframes criaNode{
   
   0%{
@@ -145,6 +147,28 @@ button:disabled{
 
 }
 
+.rect{
+  transition: all 1s ease-out;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-name: criaRect;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+@keyframes criaRect{
+  
+  0%{
+    transform: scale(0);
+  }
+  50%{
+    transform: scale(1.5);
+  }
+  100%{
+    transform: scale(1);
+  }
+
+}
 
 .linha{
   
@@ -166,9 +190,26 @@ button:disabled{
 
 }
 
-.rect{
-  transition: all 1s ease-out;
+.linhaList{
+  
+  transition: all 1s ease;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: move 25s linear;   
+  animation-fill-mode: forwards; 
+
 }
+
+.linhaSearch{
+  
+  transition: all 1s ease;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: move 10s linear;   
+  animation-fill-mode: forwards; 
+
+}
+
 
 @keyframes move {
   100% {
@@ -191,11 +232,12 @@ button:disabled{
 
 #infostack{
   width: 28vw;
-  height: 50vh;
+  height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  text-align: center;
 }
 
 #StackContainer{
@@ -216,4 +258,18 @@ button:disabled{
 
 #popButton{
   width: 21vw;
+}
+
+.LinkedList{
+  margin-top: 0.5vh;
+}
+
+#varStack{
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
