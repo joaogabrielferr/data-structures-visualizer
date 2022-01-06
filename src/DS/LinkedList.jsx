@@ -2,17 +2,21 @@
 ///////This code generates a visualization tool for Linked Lists
 import React from "react";
 import { useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LinkedList = () => {
+
+  const navigate = useNavigate();
+
   const svgref = useRef(); //reference to SVG element
   const svgContainer = useRef(); //reference to the div container that wraps the SVG element
 
   class Node {
     constructor(value) {
-      this.value = value;
-      this.next = null;
-      this.x = 0;
-      this.y = 0;
+      this.value = value; //data stored
+      this.next = null; //pointer to the next node
+      this.x = 0; //x coordinate for this node in the svg area
+      this.y = 0; //y coordinate for this node in the svg area
       this.isHEAD = false;
       this.id = 0;
     }
@@ -22,6 +26,11 @@ const LinkedList = () => {
   let positions = [];
   let used = [];
   const MAX_ID = 66;
+  let insertButton = null;
+  let searchButton = null;
+  let deleteButton = null;
+
+
 
   const add = () => {
     let value = document.getElementById("insertInput").value;
@@ -30,40 +39,18 @@ const LinkedList = () => {
     insert(value);
   };
 
+
+  //////INSERT OPERATION/////////////////
   const insert = (value) => {
     if (used.length === MAX_ID) {
       console.log("memory is full");
       return;
     }
 
-    if (HEAD === null) {
-      const node = new Node(value);
-      node.isHEAD = true;
-      HEAD = node;
-      print();
-      animateInsertion(node, null);
-      return;
-    }
+    insertButton.disabled = true;
+    searchButton.disabled = true;
+    deleteButton.disabled = true;
 
-    let current = HEAD;
-    while (current.next !== null) {
-      current = current.next;
-    }
-
-    const node = new Node(value);
-    current.next = node;
-
-    print();
-    animateInsertion(current.next, current);
-  };
-
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
-  const animateInsertion = (node, anterior) => {
     let pos = 0;
     let x = 0,
       y = 0;
@@ -81,10 +68,70 @@ const LinkedList = () => {
       }
     }
 
+    const nodeList = [];
+
+    if (HEAD === null) {
+      const node = new Node(value);
+      node.id = pos.id;
+      node.x = pos.x;
+      node.y = pos.y;
+      node.isHEAD = true;
+      HEAD = node;
+      print();
+      animateInsertion(node, null,pos);
+      setTimeout(() => {
+        insertButton.disabled = false;
+        searchButton.disabled = false;
+        deleteButton.disabled = false;
+      }, 200);
+      return;
+    }
+
+    let current = HEAD;
+    while (current.next !== null) {
+      nodeList.push(current);
+      current = current.next;
+    }
+    nodeList.push(current);
+    const node = new Node(value);
+
+
     node.id = pos.id;
     node.x = pos.x;
     node.y = pos.y;
 
+
+    current.next = node;
+    nodeList.push(current.next);
+
+    animateSeach(current.next,nodeList,"insert");
+
+    setTimeout(() => {
+      animateInsertion(current.next, current,pos);
+      setTimeout(() => {
+        insertButton.disabled = false;
+        searchButton.disabled = false;
+        deleteButton.disabled = false;
+      }, 200);
+
+    }, 2000*(nodeList.length - 1));
+
+    print();
+
+
+  };
+
+
+  ///RETURNS RANDOM INTEGER BETWEEN MIN AND MAX - 1//////////////
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  ///////////FUNCTION TO ANIMATE THE INSERTION IN THE MEMORY
+  const animateInsertion = (node, anterior,pos) => {
+  
     let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     rect.setAttribute("x", `${pos.x}`);
     rect.setAttribute("y", `${pos.y + 2}`);
@@ -136,20 +183,13 @@ const LinkedList = () => {
         "http://www.w3.org/2000/svg",
         "line"
       );
-    //   linha.setAttribute("x2", `${pos.x + 6}`);
-    //   linha.setAttribute("y2", `${pos.y + 6}`);
-    //   linha.setAttribute("x1", `${anterior.x + 6}`);
-    //   linha.setAttribute("y1", `${anterior.y + 6}`);
-    //   linha.setAttribute("marker-end", `url(#arrowhead)`);
-    //   linha.style.stroke = "#254569";
-    //   linha.style.strokeWidth = "0.03vw";
-    //   linha.setAttribute("class", "linhaList");
-    //   svgref.current.append(linha);
 
+    
     document.getElementById( `${anterior.id}t_next`).textContent = `Next: ${node.id}`;
         
     }
   };
+
 
   const lookup = () => {
     let value = document.getElementById("searchInput").value;
@@ -159,29 +199,51 @@ const LinkedList = () => {
     search(value);
   };
 
+  //////SEARCH OPERATION///////////////
   const search = (value) => {
     let current = HEAD;
+
+    insertButton.disabled = true;
+    searchButton.disabled = true;
+    deleteButton.disabled = true;
 
     let nodeList = [];
     while (current !== null) {
         nodeList.push(current);
       if (current.value === value) {
         console.log("the value is in the list");
-        animateSeach(current,nodeList);
-        return;
+        animateSeach(current,nodeList,"search");
+        setTimeout(() => {
+          insertButton.disabled = false;
+          searchButton.disabled = false;
+          deleteButton.disabled = false;
+        }, 2000*(nodeList.length - 1));
+        return true;
       }
       current = current.next;
     }
     nodeList.push(null);
-    animateSeach(current,nodeList);
+    animateSeach(current,nodeList,"search");
+
+    setTimeout(() => {
+      insertButton.disabled = false;
+      searchButton.disabled = false;
+      deleteButton.disabled = false;
+    }, 2000*(nodeList.length - 1));
+
+    return false;
   }
 
-    const animateSeach = (node,nodeList) =>{
+
+    ////////FUNCTION TO ANIMATE THE SEARCH FOR THE NODE IN THE LIST/////////////
+    const animateSeach = (node,nodeList,op) =>{
 
         console.log(nodeList);
         for(let i = 0;i<nodeList.length;i++)
         {
             if(nodeList[i] === null)return;
+            if(i === nodeList.length - 1 && op === "insert")return;
+
 
             setTimeout(() => {
                 const r = document.getElementById(`${nodeList[i].id}`);
@@ -203,6 +265,14 @@ const LinkedList = () => {
                     }
 
                 }
+
+                const n = document.getElementById(`${nodeList[i].id}t_next`);
+                    n.setAttributeNS(
+                        null,
+                        "style",
+                        "text-anchor:middle; fill:#ffffff ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+                      );
+
                 let linha = document.createElementNS(
                     "http://www.w3.org/2000/svg",
                     "line"
@@ -210,21 +280,14 @@ const LinkedList = () => {
 
                 setTimeout(() => {
                     
-                    const n = document.getElementById(`${nodeList[i].id}t_next`);
-                    n.setAttributeNS(
-                        null,
-                        "style",
-                        "text-anchor:middle; fill:#ffffff ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
-                      );
-
-                    
-                      if(i < nodeList.length - 1 && nodeList[i] !== null){
+                  
+                      if(i < nodeList.length - 1 && nodeList[i] !== null && nodeList[i+1] !== null){
                       linha.setAttribute("x1", `${nodeList[i].x + 6}`);
                       linha.setAttribute("y1", `${nodeList[i].y + 6}`);
                       linha.setAttribute("x2", `${nodeList[i+1].x + 6}`);
                       linha.setAttribute("y2", `${nodeList[i+1].y + 6}`);
-                      linha.style.stroke = "#254569";
-                      linha.style.strokeWidth = "0.01vw";
+                      linha.style.stroke = "#d16900";
+                      linha.style.strokeWidth = "0.02vw";
                       linha.setAttribute("class", "linhaSearch");
                       svgref.current.append(linha);
                       }
@@ -250,11 +313,12 @@ const LinkedList = () => {
                         "style",
                         "text-anchor:middle; fill:#ffffff ;font-size:0.13vw; font-weight:bold; font-family:Poppins; dy=.3em"
                       );
+
                 }, 2000);
 
-            }, 3000*i);
-        }
-
+            }, 2000*i);
+            
+          }
   };
 
   const update = (old, _new) => {};
@@ -267,28 +331,198 @@ const LinkedList = () => {
     deletion(value);
   };
 
+  ///////DELETION OPERATION/////////////////
   const deletion = (value) => {
     if (!search(value)) {
       console.log("the value is NOT in the list");
       return;
     }
 
+    insertButton.disabled = true;
+    searchButton.disabled = true;
+    deleteButton.disabled = true;
+
     let current = HEAD;
 
+    let nodeList = [];
+    while(current.value !== value)
+    {
+        nodeList.push(current);
+        current = current.next;
+    }
+    nodeList.push(current);
+
+    current = HEAD;
+
+    if(HEAD.value !== value){
+    while (current.next.value !== value) {
+      current = current.next;
+    }
+  }
+    let node = null;
+    let id = -1;
+    if(HEAD.value !== value)
+    {
+    node = current.next;
+    id = node.id;
+    }else
+    {
+      node = HEAD;
+      id = node.id;
+    }
+
+    let idx = used.indexOf(id);
+    used.splice(idx,1);
+
     if (HEAD.value === value) {
+      console.log("HEAD:",node);
       HEAD = HEAD.next;
       if (HEAD !== null) HEAD.isHEAD = true;
+      animateSeach(node,nodeList,"search");
+
+      setTimeout(() => {
+        animateDeletion(null,node,HEAD);
+
+        insertButton.disabled = false;
+        searchButton.disabled = false;
+        deleteButton.disabled = false;
+        
+
+      }, 2000);
+
+
       print();
       return;
     }
 
-    while (current.next.value !== value) {
-      current = current.next;
-    }
 
-    current.next = current.next.next;
+    
+    current.next = node.next;
+
+    animateSeach(node,nodeList,"search");
+
+    setTimeout(() => {
+
+        animateDeletion(current,node,current.next);
+
+        insertButton.disabled = false;
+        searchButton.disabled = false;
+        deleteButton.disabled = false;
+    }, 2000*(nodeList.length-1));
+
     print();
   };
+
+
+  ///////////FUNCTION TO ANIMATE THE DELETION OF A NODE//////////////
+  const animateDeletion = (prev,node,next) =>{
+  
+
+      const textnode = document.getElementById(`${node.id}t_next`);
+      textnode.setAttributeNS(
+          null,
+          "style",
+          "text-anchor:middle; fill:#ffffff ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        );
+
+      if(prev === null)
+      {
+
+        if(next === null)
+        {
+          console.log("somente a head.");
+          document.getElementById(node.id).remove();
+        }else
+        {
+
+          let linha = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+          );  
+          linha.setAttribute("x1", `${node.x + 6}`);
+          linha.setAttribute("y1", `${node.y + 6}`);
+          linha.setAttribute("x2", `${next.x + 6}`);
+          linha.setAttribute("y2", `${next.y + 6}`);
+          linha.style.stroke = "#d16900";
+          linha.style.strokeWidth = "0.02vw";
+          linha.setAttribute("class", "linhaSearch");
+          svgref.current.append(linha);
+
+          setTimeout(() => {
+          
+            const nextrect = document.getElementById(next.id);
+          nextrect.setAttribute("stroke", "#d16900");
+          nextrect.setAttribute("stroke-width", "0.3");
+
+          linha.remove();
+          document.getElementById(node.id).remove();
+          }, 1000);
+          
+
+        }
+
+
+      }else if(next === null)
+      {
+        
+
+        const textprev = document.getElementById(`${prev.id}t_next`);
+        textprev.textContent = `Next:NULL`;
+
+        setTimeout(() => {
+          document.getElementById(`${node.id}t_next`).remove();
+          document.getElementById(node.id).remove();
+        }, 1000);
+
+      }else
+      {
+
+      setTimeout(() => {
+        
+        const textprev = document.getElementById(`${prev.id}t_next`);
+        textprev.textContent = `Next:${next.id}`;
+
+          setTimeout(() => {
+
+            let linha = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "line"
+            );  
+            linha.setAttribute("x1", `${prev.x + 6}`);
+            linha.setAttribute("y1", `${prev.y + 6}`);
+            linha.setAttribute("x2", `${next.x + 6}`);
+            linha.setAttribute("y2", `${next.y + 6}`);
+            linha.style.stroke = "#d16900";
+            linha.style.strokeWidth = "0.02vw";
+            linha.setAttribute("class", "linhaSearch");
+            svgref.current.append(linha);
+
+            setTimeout(() => {
+              
+              textnode.remove();
+              const textrect = document.getElementById(`${node.id}`);
+              textrect.remove();
+              linha.remove();
+            }, 1500);
+
+
+          }, 1000);
+
+
+
+      }, 500);
+
+      
+
+
+    
+
+    }
+    
+
+
+  }
+
 
   const print = () => {
     let current = HEAD;
@@ -420,6 +654,11 @@ const LinkedList = () => {
         (value === "" || (parseInt(value) >= 0 && parseInt(value) <= 9999999))
       );
     });
+
+    insertButton = document.getElementById("insertButton");
+    searchButton = document.getElementById("searchButton");;
+    deleteButton = document.getElementById("deleteButton");;
+
   }, []);
 
   return (
@@ -427,6 +666,7 @@ const LinkedList = () => {
       <div id="StackContainer">
         <div id="infostack">
           <div id="nameStack">
+            <p onClick={()=>navigate("/")} style={{cursor:"pointer"}}>← return</p>
             <h3>LinkedList Visualization Tool</h3>
           </div>
           <div>
@@ -442,7 +682,7 @@ const LinkedList = () => {
               placeholder="Seach for a element"
               id="searchInput"
             />
-            <button id="seachtButton" onClick={lookup}>
+            <button id="searchButton" onClick={lookup}>
               Search
             </button>
           </div>

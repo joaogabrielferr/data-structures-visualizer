@@ -25,11 +25,16 @@ a, a:hover, a:focus, a:active{
   margin:"0 auto";
   font-weight: 800;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: #254569;
-  
+  margin-top: 5vh;
 }
+
+#name p{
+  font-size: 1vw;
+}
+
 
 #svgcontainer{
   margin-top: 2vh;
@@ -254,6 +259,11 @@ button:disabled{
   align-items: center;
   color: #254569;
   text-align: center;
+  flex-direction: column;
+}
+
+#nameStack p{
+  font-size: 1vw;
 }
 
 #popButton{
@@ -272,4 +282,73 @@ button:disabled{
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.Homepage{
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#DSContainer{
+  width: 100%;
+  height: 93vh;
+  background-color: #254569;
+  display: flex;
+  flex-direction: column;
+}
+
+#title{
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+}
+
+#title h1{
+  font-size: 3vw;
+  margin: 0;
+}
+
+#DSoptions{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1vw;
+}
+
+.DSOPTION{
+  width: 30vw;
+  height: 50vh;
+  background-color: white;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.3vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+.imageContainer{
+  display: flex;
+  width: 50%;
+  height: 50%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.imageContainer img{
+
+  width: 100%;
+  height: 100%;
+
 }

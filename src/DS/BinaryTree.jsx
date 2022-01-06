@@ -3,10 +3,12 @@
 //graphics are created with SVG elements
 
 import React from 'react'
-import { useRef,useEffect,useState } from 'react'; 
+import { useRef,useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 
 const BinaryTree = () => {
 
+    const navigate = useNavigate();
     
     const svgref = useRef(); //reference to SVG element
     const svgContainer = useRef(); //reference to the div container that wraps the SVG element
@@ -1460,8 +1462,14 @@ const BinaryTree = () => {
         <div className = "BinaryTree">
             
             <div id="info">
-                <p></p>
-                <div id = "name"><h2>Binary Search Tree Visualization Tool</h2>
+                
+                <div id = "name">
+                <div onClick={()=>navigate("/")} style={{cursor:"pointer"}}><p> ← return</p> </div>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>   
+                <div><h2>Binary Search Tree Visualization Tool</h2></div>
                 </div>
                 
                 <div id = "opBST">

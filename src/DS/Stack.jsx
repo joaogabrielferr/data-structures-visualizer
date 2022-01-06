@@ -1,7 +1,10 @@
 import React from 'react'
 import { useRef,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Stack = () => {
+
+    const navigate = useNavigate();
 
     const svgref = useRef(); //reference to SVG element
     const svgContainer = useRef(); //reference to the div container that wraps the SVG element
@@ -290,7 +293,9 @@ const Stack = () => {
             
             <div id="StackContainer">
             <div id="infostack">
-            <div id = "nameStack"><h3>Stack Visualization Tool</h3></div>
+            <div id = "nameStack">
+                <p onClick={()=>navigate("/")} style={{cursor:"pointer"}}>← return</p>
+                <h3>Stack Visualization Tool</h3></div>
                 <div>
                     <input type="text" placeholder='Add a element' id = "pushInput"/>
                     <button id = "pushButton" onClick={push}>Push</button>
