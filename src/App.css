@@ -292,63 +292,121 @@ button:disabled{
 
 #DSContainer{
   width: 100%;
-  height: 93vh;
-  background-color: #254569;
+  height: 100%;
+  background-color: #121b29;
   display: flex;
   flex-direction: column;
 }
 
-#title{
+#HomepageHeader{
   width: 100%;
-  height: 20vh;
+  height: 10vh;
+}
+
+#innerheader{
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
   color: white;
 }
 
-#title h1{
-  font-size: 3vw;
-  margin: 0;
-}
-
-#DSoptions{
+.datastructure{
   width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: auto auto auto;
+  height: 70vh;
+  display: flex;
   justify-content: center;
   align-items: center;
-  column-gap: 1vw;
 }
 
-.DSOPTION{
-  width: 30vw;
-  height: 50vh;
-  background-color: white;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 0.3vw;
+.datastructure h1{
+  font-size: 3vw;
+}
+
+.innerdatastructure{
+  width: 90%;
+  height: 95%;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
 }
 
-
-.imageContainer{
-  display: flex;
-  width: 50%;
-  height: 50%;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0 auto;
+#bstdatastructure{
+  background-color: #99ccba;
 }
 
-.imageContainer img{
-
-  width: 100%;
+.infodatastructure{
   height: 100%;
+  width: 30vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
 
+.infodatastructure button{
+  width: 40%;
+  height: 10%;
+  border-radius: 0.3vw;
+}
+
+.imgdatastructure{
+  height: 100%;
+  width: 60vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.innerimgdatastructure{
+  width:  90%;
+  height: 65%;
+}
+
+.innerimgdatastructure img{
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5vw;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#linkedlistcontainer{
+  background-color: #222;
+  color: white;
+}
+
+#stackcontainer{
+  background-color: #c9addb;
+}
+
+#queuecontainer{
+  background-color: #702824;
+  color: white;
+}
+
+#heapcontainer{
+  background-color: #c9c6bd;
+}
+
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #eee;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 1vw;
+}
+
+*::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 0.5vw;
+  border: 0.1vw solid #eee;
 }

@@ -31,7 +31,7 @@ const LinkedList = () => {
   let deleteButton = null;
 
 
-
+  //get the value to insert from the input
   const add = () => {
     let value = document.getElementById("insertInput").value;
     if (value === "") return;
@@ -44,6 +44,7 @@ const LinkedList = () => {
   const insert = (value) => {
     if (used.length === MAX_ID) {
       console.log("memory is full");
+      animateFullMemory();
       return;
     }
 
@@ -191,6 +192,41 @@ const LinkedList = () => {
   };
 
 
+  const animateFullMemory = () =>{
+
+      insertButton.disabled = true;
+      searchButton.disabled = true;
+      deleteButton.disabled = true;
+
+      const memtext = document.getElementById("memtitle");
+      memtext.textContent = "MEMORY IS FULL";
+      memtext.setAttributeNS(
+        null,
+        "style",
+        "text-anchor:middle; fill:#c90300 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+      );
+      
+      setTimeout(() => {
+
+        memtext.textContent = "MEMORY";
+        memtext.setAttributeNS(
+          null,
+          "style",
+          "text-anchor:middle; fill:#c90300 ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        );
+        
+        insertButton.disabled = false;
+        searchButton.disabled = false;
+        deleteButton.disabled = false;
+
+
+      }, 1500);
+
+
+  }
+
+
+  //get the value to search for from input
   const lookup = () => {
     let value = document.getElementById("searchInput").value;
     if (value === "") return;
@@ -619,6 +655,7 @@ const LinkedList = () => {
       "text-anchor:middle; fill:#254569 ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     textoroot.textContent = `MEMORY`;
+    textoroot.setAttribute("id", `memtitle`)
     svgref.current.appendChild(textoroot);
 
     let inirow = -33;
