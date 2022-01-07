@@ -13,4 +13,4 @@ Visualization tool for data structures such as Binary Tree, Binary Heap, Linked 
   
   ![alt text](https://res.cloudinary.com/locomoc/image/upload/v1641521482/stackimage_xf1ifb.png)
   
- 
+ Visualization for other data structures are still in development.
