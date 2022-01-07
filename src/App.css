@@ -67,6 +67,7 @@ a, a:hover, a:focus, a:active{
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-top: 1.5vh;
 }
 
 input{
