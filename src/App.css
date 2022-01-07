@@ -28,7 +28,7 @@ a, a:hover, a:focus, a:active{
   justify-content: flex-start;
   align-items: center;
   color: #254569;
-  margin-top: 8vh;
+  margin-top: 5vh;
 }
 
 #name p{
@@ -43,7 +43,7 @@ a, a:hover, a:focus, a:active{
 
 #info{
   width: 98%;
-  height: 22vh;
+  height: 28vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
