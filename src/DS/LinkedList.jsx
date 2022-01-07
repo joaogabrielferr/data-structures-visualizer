@@ -727,7 +727,7 @@ const LinkedList = () => {
           <div>
             <input
               type="text"
-              placeholder="Seach for a element"
+              placeholder="Delete a element"
               id="deleteInput"
             />
             <button id="deleteButton" onClick={erase}>

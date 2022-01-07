@@ -399,7 +399,7 @@ button:disabled{
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 1vw;
+  width: 0.7vw;
 }
 
 *::-webkit-scrollbar-track {
