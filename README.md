@@ -1,6 +1,5 @@
 # DataStructures-Visualizer
-Visualization tool for data structures such as Binary Tree, Binary Heap, Linked List, Stack, and others. You can visualize the main operations of each data structures, and how  
-these operations modify the data structures. The animations were done with CSS and Scalable Vector Graphics (<svg> tag on HTML).
+Visualization tool for data structures such as Binary Tree, Binary Heap, Linked List, Stack, and others. You can visualize the main operations of each data structures, and how these operations modify the data structures. The animations were done with CSS and Scalable Vector Graphics ( svg tag on HTML).
   
 # Binary Search Tree:
 
@@ -12,6 +11,6 @@ these operations modify the data structures. The animations were done with CSS a
 
 # Stack
   
-    ![alt text](https://res.cloudinary.com/locomoc/image/upload/v1641521482/stackimage_xf1ifb.png)
+  ![alt text](https://res.cloudinary.com/locomoc/image/upload/v1641521482/stackimage_xf1ifb.png)
   
  
