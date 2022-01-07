@@ -25,7 +25,7 @@ function App() {
             <Route exact path = "/bst" element = {<BinaryTree></BinaryTree>} ></Route>
             <Route exact path = "/linkedlist" element = {<LinkedList></LinkedList>} ></Route>
             <Route exact path = "/stack" element = {<Stack></Stack>} ></Route>
-
+            <Route path = "*" element = {<Homepage></Homepage>}></Route>
           </Routes>
 
       </Router>
