@@ -325,13 +325,13 @@ const Stack = () => {
           </div>
           <div>
             <input type="text" placeholder="Add a element" id="pushInput" />
-            <button id="pushButton" onClick={push}>
+            <button id="pushButton" onClick={push} className="button">
               Push
             </button>
           </div>
           <div>
             <p></p>
-            <button id="popButton" onClick={pop}>
+            <button id="popButton" onClick={pop} className="button">
               Pop
             </button>
           </div>

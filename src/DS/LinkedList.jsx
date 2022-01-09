@@ -708,7 +708,7 @@ const LinkedList = () => {
           </div>
           <div>
             <input type="text" placeholder="Add a element" id="insertInput" />
-            <button id="insertButton" onClick={add}>
+            <button id="insertButton" onClick={add} className="button">
               Insert
             </button>
           </div>
@@ -719,7 +719,7 @@ const LinkedList = () => {
               placeholder="Seach for a element"
               id="searchInput"
             />
-            <button id="searchButton" onClick={lookup}>
+            <button id="searchButton" onClick={lookup} className="button">
               Search
             </button>
           </div>
@@ -730,7 +730,7 @@ const LinkedList = () => {
               placeholder="Delete a element"
               id="deleteInput"
             />
-            <button id="deleteButton" onClick={erase}>
+            <button id="deleteButton" onClick={erase} className="button">
               Delete
             </button>
           </div>

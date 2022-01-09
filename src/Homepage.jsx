@@ -9,136 +9,106 @@ const Homepage = () => {
 
   return (
     <div className="Homepage">
-      <div id="DSContainer">
-        <div id="HomepageHeader">
-          <div id="innerheader">
-            <h1>Data Structures Visualization</h1>
-            <div>
-              João Gabriel &nbsp;{" "}
-              <a href="https://github.com/joaogabrielferr" target={"_blank"}>
-                <i className="fab fa-github"></i>
-              </a>
-              &nbsp;
-              <a
-                href="https://www.linkedin.com/in/joaogabrielferr/"
-                target={"_blank"}
-              >
-                <i className="fab fa-linkedin"></i>
-              </a>{" "}
-            </div>
-          </div>
+      <div id="footer">
+        <div id="innerfooter">
+          <p>João Gabriel</p>
+          <p>&nbsp;</p>
+          <a href="https://github.com/joaogabrielferr" target={"_blank"}>
+            <i className="fab fa-github"></i>
+          </a>
+          &nbsp;
+          <a
+            href="https://www.linkedin.com/in/joaogabrielferr/"
+            target={"_blank"}
+          >
+            <i className="fab fa-linkedin"></i>
+          </a>{" "}
         </div>
-
-        <div className="datastructure" id="bstdatastructure">
-          <div className="innerdatastructure">
-            <div className="infodatastructure">
-              <h1>Binary Search Tree</h1>
-              <p>
-                A binary Search Tree is a binary tree where for each node, the
-                data stored in the node is greater than all the values stored in
-                the node's left subtree, and lesser than all the values stored
-                in its right subtree. All the operations are done mantaining
-                this property.
-              </p>
-              <button onClick={() => navigate("/bst")} className = "visualizeButton">Visualize</button>
-            </div>
-
-            <div className="imgdatastructure">
-              <div className="innerimgdatastructure">
-                <img src={bstimage} alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="datastructure" id="linkedlistcontainer">
-          <div className="innerdatastructure">
-            <div className="infodatastructure">
-              <h1>Linked List</h1>
-              <p>
-                A linked list is a data structure that stores its items in a
-                linear fashion, but the elements are not stored in sequence in
-                the memory, but rather in random locations, and can be retrieved
-                using pointers.
-              </p>
-              <button onClick={() => navigate("/linkedlist")} className = "visualizeButton">Visualize</button>
-            </div>
-
-            <div className="imgdatastructure">
-              <div className="innerimgdatastructure">
-                <img src={linkedlistimage} alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="datastructure" id="stackcontainer">
-          <div className="innerdatastructure">
-            <div className="infodatastructure">
-              <h1>Stack</h1>
-              <p>
-                A stack is a data structure that stores its items following the
-                LIFO order (Last In First Out). That means that the items are
-                stores in a linear sequence, but only the last element added can
-                be acessed or removed at any time.
-              </p>
-              <button onClick={() => navigate("/stack")} className = "visualizeButton">Visualize</button>
-            </div>
-
-            <div className="imgdatastructure">
-              <div className="innerimgdatastructure">
-                <img src={stackimage} alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-        <div className="datastructure" id="queuecontainer">
-          <div className="innerdatastructure">
-            <div className="infodatastructure">
-              <h1>Queue</h1>
-              <p>
-                In development
-              </p>
-              
-            </div>
-
-            <div className="imgdatastructure">
-              <div className="innerimgdatastructure">
-                
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div className="datastructure" id="heapcontainer">
-          <div className="innerdatastructure">
-            <div className="infodatastructure">
-              <h1>Heap</h1>
-              <p>
-                In development
-              </p>
-              
-            </div>
-
-            <div className="imgdatastructure">
-              <div className="innerimgdatastructure">
-                
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
       </div>
 
-      <div id="footer-home">
-                João Gabriel &nbsp; <a href='https://github.com/joaogabrielferr' target={"_blank"}><i className="fab fa-github"></i></a>
-                &nbsp;<a href="https://www.linkedin.com/in/joaogabrielferr/" target={"_blank"}><i className="fab fa-linkedin"></i></a>  </div>
+      <div id="title-home">
+      Visualize the operations for the most important data structures with animations.
+      </div>
+
+      <div className="ds-container">
+        <div className="ds-info">
+          <h1 id = "title-bst">Binary Search Tree</h1>
+          <p>A binary search tree is a binary tree where, for each node, the value stored in that node is greater than all the values in the node's left subtree, and lesser than the values in its right subtree. All the operations are done maintaning this property.</p>
+          <p></p>
+          <button className = "ds-button" onClick = {()=>navigate("/bst")}>Visualize</button>
+        </div>
+        <div className="ds-img">
+
+            <div className="ds-img-container">
+              <img src={bstimage} alt="" />
+            </div>
+        </div>
+      </div>
+
+
+      <div className="ds-container">
+        <div className="ds-img">
+
+            <div className="ds-img-container">
+              <img src={linkedlistimage} alt="" />
+            </div>
+        </div>
+        <div className="ds-info">
+          <h1 id = "title-bst">Linked List</h1>
+          <p>A linked list is a data structure that store its items in a linear fashion, but the items are not stored in sequence, but rather in random memory locations, and are reached with pointers, where each item holds the pointer for the next item in the sequence.</p>
+          <p></p>
+          <button className = "ds-button" onClick={()=>navigate("/linkedlist")}>Visualize</button>
+        </div>
+      </div>
+
+      <div className="ds-container">
+
+      <div className="ds-info">
+          <h1 id = "title-bst">Stack</h1>
+          <p>A stack is a data structure where the elements are stored in sequence, but only the element at the top can be acessed or removed at any time.</p>
+          <p></p>
+          <button className = "ds-button" onClick={()=>navigate("/stack")}>Visualize</button>
+        </div>
+
+        <div className="ds-img">
+
+            <div className="ds-img-container">
+              <img src={stackimage} alt="" />
+            </div>
+        </div>
+      </div>
+
+
+      <div className="ds-container">
+
+<div className="ds-info">
+    <h1 id = "title-bst">Queue</h1>
+    <p>In delevopment</p>
+    <p></p>
+  </div>
+
+  <div className="ds-img">
+
+  </div>
+</div>
+
+<div className="ds-container">
+
+  <div className="ds-img">
+
+  </div>
+  
+  <div className="ds-info">
+    <h1 id = "title-bst">Heap</h1>
+    <p>In development</p>
+    <p></p>
+
+  </div>
+
+
+</div>
+
+
 
     </div>
   );

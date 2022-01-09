@@ -1458,7 +1458,7 @@ const BinaryTree = () => {
           <div>
             {" "}
             <input type="text" id="input" placeholder="Try adding a number" />
-            <button id="insertButton" onClick={add}>
+            <button id="insertButton" className="button" onClick={add}>
               Insert
             </button>
           </div>
@@ -1470,7 +1470,7 @@ const BinaryTree = () => {
               id="inputsearch"
               placeholder="Seach for a number"
             />
-            <button id="searchButton" onClick={look}>
+            <button id="searchButton" className="button" onClick={look}>
               Search
             </button>
           </div>
@@ -1478,7 +1478,7 @@ const BinaryTree = () => {
           <div>
             {" "}
             <input type="text" id="inputdelete" placeholder="Delete a number" />
-            <button id="deleteButton" onClick={erase}>
+            <button id="deleteButton" className="button" onClick={erase}>
               Delete
             </button>
           </div>

@@ -79,7 +79,7 @@ input{
   border: 0.1vw solid #254569;
 }
 
-button{
+.button{
   width: 5vw;
   height: 2.84vw;
   color: white;
@@ -91,11 +91,11 @@ button{
 
 }
 
-button:hover{
+.button:hover{
   background-color: #1a314b;
 }
 
-button:disabled{
+.button:disabled{
   background-color: grey;
   cursor:default;
 }
@@ -290,121 +290,102 @@ button:disabled{
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-}
-
-#DSContainer{
-  width: 100%;
-  height: 100%;
   background-color: black;
-  display: flex;
-  flex-direction: column;
+  color: white;
+  justify-content: center;
+  align-items: center;
 }
 
-#HomepageHeader{
+#footer{
   width: 100%;
   height: 10vh;
 }
 
-#innerheader{
-  width: 90%;
+#innerfooter{
+  width: 85%;
   height: 100%;
-  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+}
+
+#title-home{
+  width: 90%;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vw;
+  text-align: center;
+}
+
+.ds-container{
+  width: 100%;
+  height: 60vh;
   color: white;
-}
-
-.datastructure{
-  width: 98%;
-  height: 65vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
-
-.datastructure h1{
-  font-size: 2.5vw;
-}
-
-.innerdatastructure{
-  width: 90%;
-  height: 95%;
-  display: flex;
-}
-
-#bstdatastructure{
-  background-color: #99ccba;
-  color: black;
-}
-
-.infodatastructure{
-  height: 100%;
-  width: 35vw;
+.ds-info,.ds-img{
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   flex-direction: column;
-  text-align: left;
 }
 
-.infodatastructure button{
+.ds-info{
   width: 45%;
-  height: 12%;
-  border-radius: 0.3vw;
-  font-size: 1.3vw;
-}
-
-.imgdatastructure{
   height: 100%;
-  width: 55vw;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
 }
 
-.innerimgdatastructure{
-  width:  85%;
-  height: 60%;
+.ds-img{
+  width: 45%;
+  height: 100%;
 }
 
-.innerimgdatastructure img{
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5vw;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+#title-bst{
+  background: -webkit-linear-gradient(#23a88d, #99ffea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 3vw;
 }
 
-#linkedlistcontainer{
-  background-color: #222;
+.ds-button{
+  background-color: transparent;
+  /* background-image: linear-gradient(#23a88d, #82ffe6); */
+  font-size: 1vw;
+  width: 30%;
+  border-radius: 0.3vw;
+  border: 0.1vw solid #82ffe6;
+  transition: all 0.5s;
   color: white;
+  font-family: 'Poppins';
+  height: 10%;
+  cursor: pointer;
 }
 
-#stackcontainer{
-  background-color: #c9addb;
+.ds-button:hover{
+    
+  letter-spacing: 0.1vw;
+
 }
 
-#queuecontainer{
-  background-color: #702824;
-  color: white;
+.ds-img-container{
+  width: 90%;
+  height: 70%;
 }
 
-#heapcontainer{
-  background-color: #f7dcab;
-}
-
-#footer-home{
+.ds-img-container img{
   width: 100%;
-  height: 10vh;
-  display: flex;
-  justify-content: center;
-  font-size: large;
-  align-items: center;
-  background-color: black;
-  color: white;
+  object-fit: cover;
+  border-radius: 0.3vw;
+  box-shadow: rgba(139, 199, 255, 0.808) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
+
 
 
 /* Works on Firefox */
