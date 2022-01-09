@@ -4,6 +4,7 @@ import './App.css';
 import BinaryTree from './DS/BinaryTree';
 import Stack from './DS/Stack';
 import LinkedList from './DS/LinkedList';
+import Queue from './DS/Queue';
 import Homepage from './Homepage';
 import {
   BrowserRouter as Router,
@@ -25,6 +26,7 @@ function App() {
             <Route exact path = "/bst" element = {<BinaryTree></BinaryTree>} ></Route>
             <Route exact path = "/linkedlist" element = {<LinkedList></LinkedList>} ></Route>
             <Route exact path = "/stack" element = {<Stack></Stack>} ></Route>
+            <Route exact path = "/queue" element = {<Queue></Queue>}></Route> 
             <Route path = "*" element = {<Homepage></Homepage>}></Route>
           </Routes>
 

@@ -40,7 +40,7 @@ const Homepage = () => {
                 in its right subtree. All the operations are done mantaining
                 this property.
               </p>
-              <button onClick={() => navigate("/bst")}>Visualize</button>
+              <button onClick={() => navigate("/bst")} className = "visualizeButton">Visualize</button>
             </div>
 
             <div className="imgdatastructure">
@@ -61,7 +61,7 @@ const Homepage = () => {
                 the memory, but rather in random locations, and can be retrieved
                 using pointers.
               </p>
-              <button onClick={() => navigate("/linkedlist")}>Visualize</button>
+              <button onClick={() => navigate("/linkedlist")} className = "visualizeButton">Visualize</button>
             </div>
 
             <div className="imgdatastructure">
@@ -82,7 +82,7 @@ const Homepage = () => {
                 stores in a linear sequence, but only the last element added can
                 be acessed or removed at any time.
               </p>
-              <button onClick={() => navigate("/stack")}>Visualize</button>
+              <button onClick={() => navigate("/stack")} className = "visualizeButton">Visualize</button>
             </div>
 
             <div className="imgdatastructure">
@@ -136,7 +136,7 @@ const Homepage = () => {
 
       </div>
 
-      <div id="footer">
+      <div id="footer-home">
                 João Gabriel &nbsp; <a href='https://github.com/joaogabrielferr' target={"_blank"}><i className="fab fa-github"></i></a>
                 &nbsp;<a href="https://www.linkedin.com/in/joaogabrielferr/" target={"_blank"}><i className="fab fa-linkedin"></i></a>  </div>
 
