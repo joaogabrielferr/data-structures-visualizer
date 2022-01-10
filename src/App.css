@@ -290,7 +290,6 @@ input{
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background-color: black;
   color: black;
   justify-content: center;
   align-items: center;
@@ -298,7 +297,7 @@ input{
 
 #homepage-header{
   width: 100%;
-  height: 10vh;
+  height: 7vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -318,25 +317,48 @@ input{
 
 #title-home{
   width: 90%;
-  height: 10vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white;
+  color: black;
   flex-direction: column;
-  font-size: large;
+  font-size: 1.5vw;
+  font-family: 'Poppins', serif;
+  border-bottom: 0.1vw dashed grey;
+}
+
+#title-home h1{
+  font-weight: bolder;
+  margin: 0 auto;
+  letter-spacing: -0.1vw;
+  font-family: 'Prata', serif;
+}
+
+#title-home p{
+  color: #555;
+  font-style: italic;
+  font-size: medium;
+}
+
+hr{
+  color: grey;
 }
 
 
+
+
+
 .ds-container{
-  width: 100%;
+  width: 95%;
   height: 60vh;
   color: black;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: white;
+  border-bottom: 0.1vw dashed grey;
 }
 
 .ds-info,.ds-img{
@@ -358,18 +380,20 @@ input{
 }
 
 #title-bst{
-  background: -webkit-linear-gradient(#182a52, #345294);
+  /* background: -webkit-linear-gradient(#182a52, #345294);
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 3vw;
+  -webkit-text-fill-color: transparent; */
+  color: black;
+  font-size: 2vw;
+  font-family: 'Prata', serif;
 }
 
 .ds-button{
-  background-color: black;
+  background-color: #154e8f;
   font-size: 1vw;
   width: 50%;
-  border-radius: 0.2vw;
+  /* border-radius: 0.2vw; */
   transition: all 0.5s;
   color: white;
   font-family: 'Poppins';
@@ -380,7 +404,7 @@ input{
 
 .ds-button:hover{
     
-  letter-spacing: 0.05vw;
+  background-color: #1a314b;
 
 }
 
@@ -392,8 +416,8 @@ input{
 .ds-img-container img{
   width: 100%;
   object-fit: cover;
-  border-radius: 0.3vw;
-  box-shadow: rgba(24, 71, 116, 0.808) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  /* border-radius: 0.3vw; */
+  box-shadow: rgba(24, 71, 116, 0.808) 0px 0px 0px 1px, rgba(6, 24, 44, 0.65) 0px 2px 3px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
 

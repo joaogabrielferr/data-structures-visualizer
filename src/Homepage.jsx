@@ -11,7 +11,7 @@ const Homepage = () => {
     <div className="Homepage">
       <div id="homepage-header">
         <div id="inner-homepage-header">
-          <h1>Data structures Visualization</h1>
+          <p><a href="https://github.com/joaogabrielferr/data-structures-visualizer" target="_blank">Repository on Github</a></p>
           <div>
           <p>
             João Gabriel &nbsp;{" "}
@@ -31,16 +31,17 @@ const Homepage = () => {
       </div>
 
       <div id="title-home">
-        <p>
-          Visualize the operations for the most important data structures with
-          animations.
-        </p>
+        <p></p>
+        <h1>
+          Data Structures Visualization
+        </h1>
+        <p>Visualize the operations of main data structures with animations. Built with ReactJs. Animations done with CSS and Scalable Vector Graphics(SVG).</p>
 
       </div>
 
       <div className="ds-container">
         <div className="ds-info">
-          <h1 id="title-bst">Binary Search Tree</h1>
+          <h1 id="title-bst">I. Binary Search Tree</h1>
           <p>
             A binary search tree is a binary tree where, for each node, the
             value stored in that node is greater than all the values in the
@@ -60,13 +61,9 @@ const Homepage = () => {
       </div>
 
       <div className="ds-container">
-        <div className="ds-img">
-          <div className="ds-img-container">
-            <img src={linkedlistimage} alt="" />
-          </div>
-        </div>
-        <div className="ds-info">
-          <h1 id="title-bst">Linked List</h1>
+
+      <div className="ds-info">
+          <h1 id="title-bst">II. Linked List</h1>
           <p>
             A linked list is a data structure that store its items in a linear
             fashion, but the items are not stored in sequence, but rather in
@@ -78,11 +75,18 @@ const Homepage = () => {
             Visualize Linked List
           </button>
         </div>
+
+
+        <div className="ds-img">
+          <div className="ds-img-container">
+            <img src={linkedlistimage} alt="" />
+          </div>
+        </div>
       </div>
 
       <div className="ds-container">
         <div className="ds-info">
-          <h1 id="title-bst">Stack</h1>
+          <h1 id="title-bst">III. Stack</h1>
           <p>
             A stack is a data structure where the elements are stored in
             sequence, but only the element at the top can be acessed or removed
@@ -103,7 +107,7 @@ const Homepage = () => {
 
       <div className="ds-container">
         <div className="ds-info">
-          <h1 id="title-bst">Queue</h1>
+          <h1 id="title-bst">IV. Queue</h1>
           <p>In delevopment</p>
           <p></p>
         </div>
@@ -112,13 +116,16 @@ const Homepage = () => {
       </div>
 
       <div className="ds-container">
-        <div className="ds-img"></div>
-
-        <div className="ds-info">
-          <h1 id="title-bst">Heap</h1>
+        
+      <div className="ds-info">
+          <h1 id="title-bst">V. Heap</h1>
           <p>In development</p>
           <p></p>
         </div>
+        
+        <div className="ds-img"></div>
+
+        
       </div>
     </div>
   );
