@@ -1516,19 +1516,7 @@ const BinaryTree = () => {
           ref={svgref}
         ></svg>
       </div>
-      <div id="footer">
-        João Gabriel &nbsp;{" "}
-        <a href="https://github.com/joaogabrielferr" target={"_blank"}>
-          <i className="fab fa-github"></i>
-        </a>
-        &nbsp;
-        <a
-          href="https://www.linkedin.com/in/joaogabrielferr/"
-          target={"_blank"}
-        >
-          <i className="fab fa-linkedin"></i>
-        </a>{" "}
-      </div>
+      
     </div>
   );
 };
