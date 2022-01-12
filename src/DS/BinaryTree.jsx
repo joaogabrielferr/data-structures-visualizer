@@ -1270,7 +1270,7 @@ const BinaryTree = () => {
     svgref.current.style.border = "1px solid #254569";
     svgref.current.style.borderRadius = "0.3vw";
     svgref.current.style.width = "98vw";
-    svgref.current.style.height = "68vh";
+    svgref.current.style.height = "65vh";
 
     //////Implementation of zoom in and zoom out///////////////////
     //Taken from https://stackoverflow.com/a/52640900/17213802
