@@ -292,17 +292,17 @@ input{
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  color: rgb(223, 223, 223);
+  color: rgb(34, 32, 32);
   justify-content: center;
   align-items: center;
-  background-color: #09111a;
   overflow-x: hidden;
+  font-family: 'Poppins';
 }
 
 #header{
   width: 100vw;
-  height: 100%;
-  background-color: #09111a;
+  height: 15vh;
+  margin-top: 0.5vh;
 }
 
 #inner-header{
@@ -312,76 +312,179 @@ input{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: "Source Sans Pro";
 }
 
-#inner-header h1{
+#title-top{
+  font-size: 2.45vw;
+  font-weight: 900;
+}
+
+#title-bottom{
   font-size: 3vw;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 900;
 }
 
-.container{
-  width: 98%;
-  height: 100%;
-  margin-top: 3vh;
-  background-color: #09111a;
+#subtitle{
+  color: #555;
+  font-weight: bold;
+  padding-right: 5vw;
 }
 
-.inner-c{
-  width: 93%;
-  height: 100%;
-  margin:0 auto;
-  display: flex;
-  flex-direction: column;
-  background-color: #09111a;
-  justify-content: center;
-  align-items: center;
-}
-
-.section{
-  display: flex;
-  width: 100%;
-}
-
-.text{
-  width: 90%;
-  height: 100%;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
-
-.view-button{
+#homepage-repo{
+  border: 0.2vw dashed rgb(87, 190, 130);
+  border-radius: 0.2vw;
   padding: 1vw;
-  width: 50%;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 1vw;
-  font-weight: 800;
-  color: black;
+  background-color: rgb(206, 250, 224);
+}
+
+#homepage-repo a{
+  font-weight: bold;
+  color: #333;
+  padding: 1vw;
+}
+
+/* #nav-bar{
+  width: 60vw;
+  height: 70vh;
+  position: fixed;
+  top: 12vh;
+  left: 15vw;
+} */
+
+#select-ds{
+  font-size: 1.3vw;
+  font-weight: bold;
+  color: rgb(73, 73, 73);
+  /* background-color: red; */
+  text-align: center;
+  font-family: 'Poppins';
+}
+
+#ds-list{
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+  font-size: 0.8vw;
+  color: #111;
+  font-family: 'Poppins';
+  /* background-color: blue; */
+}
+
+#ds-list h1{
   cursor: pointer;
 }
 
-.img{
-  margin-top: 3vh;
-  width: 99%;
+.ds-section{
+  width: 90vw;
+  height: 73vh;
+  position: fixed;
+  /* background-color: red; */
+  top: 25vh;
+  left: 5vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inner-section{
+  display: flex;
+  /* background-color: blue; */
+  width: 100%;
+  height: 82%;
+  
+}
+
+.ds-info{
+  width: 50%;
   height: 100%;
+  padding-left: 1vw;
+  /* background-color: yellow; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
-.img img{
-  max-width: 100%;
-  border-radius: 0.3vw;
+.ds-img{
+  width: 98%;
+  height: 80%;
+  /* background-color: #09111a; */
 }
 
-.title{
-  font-size: 3.8vw;
+.ds-img img{
+  width: 99.5%;
+  border: 0.05vw dashed #254569;
 }
 
+#_1{
+  width: 18vw;
+  /* background-color: red; */
+  margin: 0;
+}
 
+#_2{
+  width: 12vw;
+  margin: 0;
+}
 
+#_3{
+  width: 8vw;
+  margin: 0;
+}
+
+#_4{
+  width: 8vw;
+  margin: 0;
+}
+#_5{
+  width: 5vw;
+  margin: 0;
+}
+
+#_1{
+  /* color: #1a314b; */
+}
+
+#homepage-footer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: large;
+  position: fixed;
+  top:95vh;
+  left:0vw;
+}
+
+.ds-title{
+  font-size: 1vw;
+  margin: 0;
+  text-align: left;
+  color: #254569;
+}
+
+.ds-title h1{
+  margin: 0;
+}
+
+.ds-button{
+  padding: 2vw;
+  width: 80%;
+  cursor: pointer;
+  font-family: 'Poppins';
+  border-style: none;
+  background-color: #2a588d;
+  color: white;
+  border-radius: 0.2vw;
+  font-size: 1.3vw;
+}
+
+.ds-button:hover{
+  background-color: #254569;
+}
 
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #555 #09111a;;
+  scrollbar-color: #555 #09111a;
 }
 
 /* Works on Chrome, Edge, and Safari */
