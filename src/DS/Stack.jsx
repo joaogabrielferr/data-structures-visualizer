@@ -60,7 +60,7 @@ const Stack = () => {
     textoroot.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#254569 ;font-size:30%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     textoroot.textContent = `Empty Stack`;
     textoroot.setAttribute("class", "texto");
@@ -101,7 +101,7 @@ const Stack = () => {
       textoroot.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#ffffff ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#ffffff ;font-size:30%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       textoroot.textContent = `${value}`;
       textoroot.setAttribute("class", "texto");
@@ -117,7 +117,7 @@ const Stack = () => {
       textoroot.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#254569 ;font-size:30%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       textoroot.textContent = `${id - 1}`;
       textoroot.setAttribute("class", "texto");
@@ -161,7 +161,7 @@ const Stack = () => {
       textoroot.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#ed000c ;font-size:1vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#ed000c ;font-size:50%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       textoroot.textContent = `STACK OVERFLOW`;
       textoroot.setAttribute("class", "texto");
@@ -253,7 +253,7 @@ const Stack = () => {
     textoroot.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#254569 ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#254569 ;font-size:20%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     textoroot.textContent = `MAX_SIZE`;
     textoroot.setAttribute("class", "texto");
@@ -265,7 +265,7 @@ const Stack = () => {
     textoroot.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#254569 ;font-size:30%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     textoroot.textContent = `STACK`;
     textoroot.setAttribute("class", "texto");

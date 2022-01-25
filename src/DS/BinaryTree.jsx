@@ -470,7 +470,7 @@ const BinaryTree = () => {
       texto.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#254569 ;font-size:30%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       texto.textContent = `${node.value}`;
       texto.setAttribute("class", "texto");
@@ -520,7 +520,7 @@ const BinaryTree = () => {
       texto.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#254569 ;font-size:30%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       texto.textContent = `${node.value}`;
       texto.setAttribute("class", "texto");
@@ -661,7 +661,7 @@ const BinaryTree = () => {
       texto.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold;  font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#254569 ;font-size:30%; font-weight:bold;  font-family:Poppins; dy=.3em"
       );
       texto.textContent = `${node.value}`;
       texto.setAttribute("class", "texto");

@@ -153,7 +153,7 @@ const LinkedList = () => {
     valuetext.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#ffffff ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#ffffff ;font-size:15%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     valuetext.textContent = `${node.value}`;
     valuetext.setAttribute("id", `${pos.id}t`);
@@ -168,7 +168,7 @@ const LinkedList = () => {
       nexttext.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#ffffff ;font-size:0.13vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#ffffff ;font-size:12%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       nexttext.textContent = `Next: NULL`;
       nexttext.setAttribute("id", `${pos.id}t_next`);
@@ -306,7 +306,7 @@ const LinkedList = () => {
                     n.setAttributeNS(
                         null,
                         "style",
-                        "text-anchor:middle; fill:#ffffff ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+                        "text-anchor:middle; fill:#ffffff ;font-size:15%; font-weight:bold; font-family:Poppins; dy=.3em"
                       );
 
                 let linha = document.createElementNS(
@@ -347,7 +347,7 @@ const LinkedList = () => {
                     n.setAttributeNS(
                         null,
                         "style",
-                        "text-anchor:middle; fill:#ffffff ;font-size:0.13vw; font-weight:bold; font-family:Poppins; dy=.3em"
+                        "text-anchor:middle; fill:#ffffff ;font-size:12%; font-weight:bold; font-family:Poppins; dy=.3em"
                       );
 
                 }, 2000);
@@ -652,7 +652,7 @@ const LinkedList = () => {
     textoroot.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#254569 ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#254569 ;font-size:20%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     textoroot.textContent = `MEMORY`;
     textoroot.setAttribute("id", `memtitle`)
@@ -674,7 +674,7 @@ const LinkedList = () => {
         textoroot.setAttributeNS(
           null,
           "style",
-          "text-anchor:middle; fill:#254569 ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+          "text-anchor:middle; fill:#254569 ;font-size:20%; font-weight:bold; font-family:Poppins; dy=.3em"
         );
         textoroot.textContent = `#${mempos++}`;
         svgref.current.appendChild(textoroot);
