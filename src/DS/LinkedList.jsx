@@ -458,7 +458,7 @@ const LinkedList = () => {
       textnode.setAttributeNS(
           null,
           "style",
-          "text-anchor:middle; fill:#ffffff ;font-size:0.2vw; font-weight:bold; font-family:Poppins; dy=.3em"
+          "text-anchor:middle; fill:#ffffff ;font-size:1%; font-weight:bold; font-family:Poppins; dy=.3em"
         );
 
       if(prev === null)
@@ -466,7 +466,7 @@ const LinkedList = () => {
 
         if(next === null)
         {
-          console.log("somente a head.");
+          //console.log("somente a head.");
           document.getElementById(node.id).remove();
         }else
         {
@@ -475,12 +475,12 @@ const LinkedList = () => {
             "http://www.w3.org/2000/svg",
             "line"
           );  
-          linha.setAttribute("x1", `${node.x + 6}`);
-          linha.setAttribute("y1", `${node.y + 6}`);
-          linha.setAttribute("x2", `${next.x + 6}`);
-          linha.setAttribute("y2", `${next.y + 6}`);
+          linha.setAttribute("x1", `${node.x + 6}%`);
+          linha.setAttribute("y1", `${node.y + 6}%`);
+          linha.setAttribute("x2", `${next.x + 6}%`);
+          linha.setAttribute("y2", `${next.y + 6}%`);
           linha.style.stroke = "#d16900";
-          linha.style.strokeWidth = "0.02vw";
+          linha.style.strokeWidth = "0.5%";
           linha.setAttribute("class", "linhaSearch");
           svgref.current.append(linha);
 
@@ -488,7 +488,7 @@ const LinkedList = () => {
           
             const nextrect = document.getElementById(next.id);
           nextrect.setAttribute("stroke", "#d16900");
-          nextrect.setAttribute("stroke-width", "0.3");
+          nextrect.setAttribute("stroke-width", "0.5%");
 
           linha.remove();
           document.getElementById(node.id).remove();
@@ -524,12 +524,12 @@ const LinkedList = () => {
               "http://www.w3.org/2000/svg",
               "line"
             );  
-            linha.setAttribute("x1", `${prev.x + 6}`);
-            linha.setAttribute("y1", `${prev.y + 6}`);
-            linha.setAttribute("x2", `${next.x + 6}`);
-            linha.setAttribute("y2", `${next.y + 6}`);
+            linha.setAttribute("x1", `${prev.x + 6}%`);
+            linha.setAttribute("y1", `${prev.y + 6}%`);
+            linha.setAttribute("x2", `${next.x + 6}%`);
+            linha.setAttribute("y2", `${next.y + 6}%`);
             linha.style.stroke = "#d16900";
-            linha.style.strokeWidth = "0.02vw";
+            linha.style.strokeWidth = "0.5%";
             linha.setAttribute("class", "linhaSearch");
             svgref.current.append(linha);
 
