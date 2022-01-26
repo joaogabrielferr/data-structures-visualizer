@@ -71,7 +71,33 @@ a, a:hover, a:focus, a:active{
   justify-content: space-between;
   align-items: flex-start;
   margin-top: 3.5vh;
+  background-color: red;
 }
+
+@media only screen and (min-width: 1400px) and (max-width: 1700px) {
+	#messages{
+    width: 98%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 4.5vh;
+    background-color: red;
+  }
+}
+
+@media only screen and (min-height: 1100px) and (max-height: 1300px) {
+	#messages{
+    width: 98%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 5vh;
+    background-color: red;
+  }
+}
+
 
 input{
   width: 15vw;
@@ -204,7 +230,7 @@ input{
   transition: all 1s ease;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
-  animation: move 25s linear;   
+  animation: move 5s linear;   
   animation-fill-mode: forwards; 
 
 }
@@ -212,9 +238,9 @@ input{
 .linhaSearch{
   
   transition: all 1s ease;
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: move 10s linear;   
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: move 0.5s linear;   
   animation-fill-mode: forwards; 
 
 }
@@ -240,7 +266,7 @@ input{
 }
 
 #infostack{
-  width: 28vw;
+  width: 25vw;
   height: 95vh;
   display: flex;
   flex-direction: column;
@@ -249,8 +275,24 @@ input{
   text-align: center;
 }
 
+#infolist{
+  width: 25vw;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  background-color: blue;
+}
+
+#svgcontainerList{
+  /* background-color: red; */
+}
+
 #StackContainer{
   display: flex;
+  justify-content: space-between;
 }
 
 #nameStack{

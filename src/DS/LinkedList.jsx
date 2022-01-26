@@ -25,7 +25,7 @@ const LinkedList = () => {
   let HEAD = null;
   let positions = [];
   let used = [];
-  const MAX_ID = 66;
+  const MAX_ID = 54;
   let insertButton = null;
   let searchButton = null;
   let deleteButton = null;
@@ -56,7 +56,7 @@ const LinkedList = () => {
     let x = 0,
       y = 0;
     while (true) {
-      const id = getRandomInt(1, 67);
+      const id = getRandomInt(1, 55);
       if (!used.includes(id)) {
         for (let i = 0; i < positions.length; i++) {
           if (positions[i].id === id) {
@@ -134,10 +134,10 @@ const LinkedList = () => {
   const animateInsertion = (node, anterior,pos) => {
   
     let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    rect.setAttribute("x", `${pos.x}`);
-    rect.setAttribute("y", `${pos.y + 2}`);
-    rect.setAttribute("width", "11");
-    rect.setAttribute("height", "10");
+    rect.setAttribute("x", `${pos.x}%`);
+    rect.setAttribute("y", `${pos.y + 2}%`);
+    rect.setAttribute("width", "7.5%");
+    rect.setAttribute("height", "10%");
     rect.setAttribute("fill", "#254569");
     rect.setAttribute("class", "rect");
     rect.setAttribute("id", `${pos.id}`);
@@ -148,12 +148,12 @@ const LinkedList = () => {
       "http://www.w3.org/2000/svg",
       "text"
     );
-    valuetext.setAttributeNS(null, "x", `${pos.x + 6}`);
-    valuetext.setAttributeNS(null, "y", `${pos.y + 6}`);
+    valuetext.setAttributeNS(null, "x", `${pos.x + 3.5}%`);
+    valuetext.setAttributeNS(null, "y", `${pos.y + 6}%`);
     valuetext.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#ffffff ;font-size:15%; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#ffffff ;font-size:100%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     valuetext.textContent = `${node.value}`;
     valuetext.setAttribute("id", `${pos.id}t`);
@@ -163,12 +163,12 @@ const LinkedList = () => {
         "http://www.w3.org/2000/svg",
         "text"
       );
-      nexttext.setAttributeNS(null, "x", `${pos.x + 5.5}`);
-      nexttext.setAttributeNS(null, "y", `${pos.y + 10}`);
+      nexttext.setAttributeNS(null, "x", `${pos.x + 3.5}%`);
+      nexttext.setAttributeNS(null, "y", `${pos.y + 10}%`);
       nexttext.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#ffffff ;font-size:12%; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#ffffff ;font-size:70%; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       nexttext.textContent = `Next: NULL`;
       nexttext.setAttribute("id", `${pos.id}t_next`);
@@ -178,7 +178,7 @@ const LinkedList = () => {
       //adding the head
       let r = document.getElementById(`${pos.id}`);
       r.setAttribute("stroke", "#d16900");
-      r.setAttribute("stroke-width", "0.3");
+      r.setAttribute("stroke-width", "0.5%");
     } else {
       let linha = document.createElementNS(
         "http://www.w3.org/2000/svg",
@@ -286,18 +286,18 @@ const LinkedList = () => {
                 if(nodeList[i+1] === null)
                 {
                     r.setAttribute("stroke", "#a80000");
-                    r.setAttribute("stroke-width", "0.8");
+                    r.setAttribute("stroke-width", "1%");
                 }else
                 {
 
                     if(i === nodeList.length - 1)
                     {
                         r.setAttribute("stroke", "#00940a");
-                        r.setAttribute("stroke-width", "0.8");
+                        r.setAttribute("stroke-width", "1%");
                     }else
                     {
                         r.setAttribute("stroke", "#00940a");
-                        r.setAttribute("stroke-width", "0.5");
+                        r.setAttribute("stroke-width", "0.5%");
                     }
 
                 }
@@ -306,7 +306,7 @@ const LinkedList = () => {
                     n.setAttributeNS(
                         null,
                         "style",
-                        "text-anchor:middle; fill:#ffffff ;font-size:15%; font-weight:bold; font-family:Poppins; dy=.3em"
+                        "text-anchor:middle; fill:#ffffff ;font-size:90%; font-weight:bold; font-family:Poppins; dy=.3em"
                       );
 
                 let linha = document.createElementNS(
@@ -318,18 +318,18 @@ const LinkedList = () => {
                     
                   
                       if(i < nodeList.length - 1 && nodeList[i] !== null && nodeList[i+1] !== null){
-                      linha.setAttribute("x1", `${nodeList[i].x + 6}`);
-                      linha.setAttribute("y1", `${nodeList[i].y + 6}`);
-                      linha.setAttribute("x2", `${nodeList[i+1].x + 6}`);
-                      linha.setAttribute("y2", `${nodeList[i+1].y + 6}`);
+                      linha.setAttribute("x1", `${nodeList[i].x + 6}%`);
+                      linha.setAttribute("y1", `${nodeList[i].y + 6}%`);
+                      linha.setAttribute("x2", `${nodeList[i+1].x + 6}%`);
+                      linha.setAttribute("y2", `${nodeList[i+1].y + 6}%`);
                       linha.style.stroke = "#d16900";
-                      linha.style.strokeWidth = "0.02vw";
+                      linha.style.strokeWidth = "0.5%";
                       linha.setAttribute("class", "linhaSearch");
                       svgref.current.append(linha);
                       }
 
 
-                }, 500);
+                }, 1000);
 
                 setTimeout(() => {
                     
@@ -338,7 +338,7 @@ const LinkedList = () => {
                     if(nodeList[i].isHEAD)
                     {
                         r.setAttribute("stroke", "#d16900");
-                        r.setAttribute("stroke-width", "0.3");
+                        r.setAttribute("stroke-width", "0.5%");
                         
                     }else{
                         r.setAttribute("stroke-width","0");
@@ -347,10 +347,10 @@ const LinkedList = () => {
                     n.setAttributeNS(
                         null,
                         "style",
-                        "text-anchor:middle; fill:#ffffff ;font-size:12%; font-weight:bold; font-family:Poppins; dy=.3em"
+                        "text-anchor:middle; fill:#ffffff ;font-size:70%; font-weight:bold; font-family:Poppins; dy=.3em"
                       );
 
-                }, 2000);
+                }, 1500);
 
             }, 2000*i);
             
@@ -573,7 +573,7 @@ const LinkedList = () => {
   useEffect(() => {
     // svgref.current.style.border = "1px solid #254569";
     svgref.current.style.borderRadius = "0.3vw";
-    svgref.current.style.width = "70vw";
+    svgref.current.style.width = "75vw";
     svgref.current.style.height = "90vh";
 
     //restricts input to only integers less than 9999999
@@ -609,21 +609,21 @@ const LinkedList = () => {
 
     let mempos = 1;
 
-    let pos = -33;
-    for (let i = 1; i <= 12; i++) {
+    let pos = 5;
+    for (let i = 1; i <= 10; i++) {
       let linha = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "line"
       );
-      linha.setAttribute("x1", `${pos}`);
-      linha.setAttribute("y1", `10`);
-      linha.setAttribute("x2", `${pos}`);
-      linha.setAttribute("y2", `100`);
+      linha.setAttribute("x1", `${pos}%`);
+      linha.setAttribute("y1", `10%`);
+      linha.setAttribute("x2", `${pos}%`);
+      linha.setAttribute("y2", `100%`);
       linha.style.stroke = "#254569";
-      linha.style.strokeWidth = "0.01vw";
-      linha.setAttribute("class", "linhaList");
+      linha.style.strokeWidth = "0.1vw";
+      // linha.setAttribute("class", "linhaList");
       svgref.current.append(linha);
-      pos += 15;
+      pos += 10;
     }
 
     pos = 10;
@@ -632,13 +632,13 @@ const LinkedList = () => {
         "http://www.w3.org/2000/svg",
         "line"
       );
-      linha.setAttribute("x1", `-33`);
-      linha.setAttribute("y1", `${pos}`);
-      linha.setAttribute("x2", `132`);
-      linha.setAttribute("y2", `${pos}`);
+      linha.setAttribute("x1", `5%`);
+      linha.setAttribute("y1", `${pos}%`);
+      linha.setAttribute("x2", `95%`);
+      linha.setAttribute("y2", `${pos}%`);
       linha.style.stroke = "#254569";
-      linha.style.strokeWidth = "0.01vw";
-      linha.setAttribute("class", "linhaList");
+      linha.style.strokeWidth = "0.1vw";
+      // linha.setAttribute("class", "linhaList");
       svgref.current.append(linha);
       pos += 15;
     }
@@ -647,41 +647,43 @@ const LinkedList = () => {
       "http://www.w3.org/2000/svg",
       "text"
     );
-    textoroot.setAttributeNS(null, "x", `50`);
-    textoroot.setAttributeNS(null, "y", `8`);
+    textoroot.setAttributeNS(null, "x", `50%`);
+    textoroot.setAttributeNS(null, "y", `7%`);
     textoroot.setAttributeNS(
       null,
       "style",
-      "text-anchor:middle; fill:#254569 ;font-size:20%; font-weight:bold; font-family:Poppins; dy=.3em"
+      "text-anchor:middle; fill:#254569 ;font-size:100%; font-weight:bold; font-family:Poppins; dy=.3em"
     );
     textoroot.textContent = `MEMORY`;
     textoroot.setAttribute("id", `memtitle`)
     svgref.current.appendChild(textoroot);
 
-    let inirow = -33;
+    // let inirow = -33;
+    // let inicol = 10;
+    let inirow = 10;
     let inicol = 10;
     let row = [];
     let id = 1;
     for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < 11; j++) {
-        positions.push({ x: inirow + 2, y: inicol + 2, id: id });
+      for (let j = 0; j < 9; j++) {
+        positions.push({ x: inirow - 3.7, y: inicol + 2, id: id });
         let textoroot = document.createElementNS(
           "http://www.w3.org/2000/svg",
           "text"
         );
-        textoroot.setAttributeNS(null, "x", `${inirow + 6}`);
-        textoroot.setAttributeNS(null, "y", `${inicol + 2.5}`);
+        textoroot.setAttributeNS(null, "x", `${inirow}%`);
+        textoroot.setAttributeNS(null, "y", `${inicol + 2.5}%`);
         textoroot.setAttributeNS(
           null,
           "style",
-          "text-anchor:middle; fill:#254569 ;font-size:20%; font-weight:bold; font-family:Poppins; dy=.3em"
+          "text-anchor:middle; fill:#254569 ;font-size:80%; font-weight:bold; font-family:Poppins; dy=.3em"
         );
         textoroot.textContent = `#${mempos++}`;
         svgref.current.appendChild(textoroot);
         id++;
-        inirow += 15;
+        inirow += 10;
       }
-      inirow = -33;
+      inirow = 10;
       inicol += 15;
     }
 
@@ -701,7 +703,7 @@ const LinkedList = () => {
   return (
     <div className="LinkedList">
       <div id="StackContainer">
-        <div id="infostack">
+        <div id="infolist">
           <div id="nameStack">
             <p onClick={()=>navigate("/")} style={{cursor:"pointer"}}>← return</p>
             <h3>LinkedList Visualization Tool</h3>
@@ -737,11 +739,11 @@ const LinkedList = () => {
           <p></p>
           <div>A linked list is a data structure where the elements are stored in a linear fashion, but the sequence is not based on memory location. Each item stores the data and a pointer to the next item, this way, the items can be stored randomly in the memory. All items can be reached from a initial pointer called Head.</div>
         </div>
-        <div id="svgcontainerStack" ref={svgContainer}>
+        <div id="svgcontainerList" ref={svgContainer}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             id="svgStack"
-            viewBox="0 0 100 100"
+            // viewBox="0 0 100 100"
             ref={svgref}
           >
             <defs>
