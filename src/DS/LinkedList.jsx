@@ -370,7 +370,7 @@ const LinkedList = () => {
   ///////DELETION OPERATION/////////////////
   const deletion = (value) => {
     if (!search(value)) {
-      console.log("the value is NOT in the list");
+      //console.log("the value is NOT in the list");
       return;
     }
 
