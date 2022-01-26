@@ -71,7 +71,6 @@ a, a:hover, a:focus, a:active{
   justify-content: space-between;
   align-items: flex-start;
   margin-top: 3.5vh;
-  background-color: red;
 }
 
 @media only screen and (min-width: 1400px) and (max-width: 1700px) {
@@ -82,7 +81,6 @@ a, a:hover, a:focus, a:active{
     justify-content: space-between;
     align-items: flex-start;
     margin-top: 4.5vh;
-    background-color: red;
   }
 }
 
@@ -94,7 +92,6 @@ a, a:hover, a:focus, a:active{
     justify-content: space-between;
     align-items: flex-start;
     margin-top: 5vh;
-    background-color: red;
   }
 }
 
