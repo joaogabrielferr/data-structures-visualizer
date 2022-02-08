@@ -1,6 +1,6 @@
 body{
   font-family: 'Poppins', sans-serif;
-  background-color: #ffffff;
+  background-color: white;
 }
 
 a, a:hover, a:focus, a:active{
@@ -337,187 +337,137 @@ input{
   font-family: 'Poppins';
 }
 
-#header{
-  width: 100vw;
-  height: 15vh;
-  margin-top: 0.5vh;
-}
 
-#inner-header{
-  width: 95%;
+.header{
+  width: 100%;
+  height: 5.5em;
+  background-color: black;
+  color: white;
+  }
+
+.inner-header{
+  width: 75em;
   height: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: "Source Sans Pro";
 }
 
-#title-top{
-  font-size: 2.45vw;
-  font-weight: 900;
-}
-
-#title-bottom{
-  font-size: 3vw;
-  font-weight: 900;
-}
-
-#subtitle{
-  color: #555;
-  font-weight: bold;
-  padding-right: 5vw;
-}
-
-#homepage-repo{
-  border: 0.2vw dashed rgb(87, 190, 130);
-  border-radius: 0.2vw;
-  padding: 1vw;
-  background-color: rgb(206, 250, 224);
-}
-
-#homepage-repo a{
-  font-weight: bold;
-  color: #333;
-  padding: 1vw;
-}
-
-/* #nav-bar{
-  width: 60vw;
-  height: 70vh;
-  position: fixed;
-  top: 12vh;
-  left: 15vw;
-} */
-
-#select-ds{
-  font-size: 1.3vw;
-  font-weight: bold;
-  color: rgb(73, 73, 73);
-  /* background-color: red; */
-  text-align: center;
-  font-family: 'Poppins';
-}
-
-#ds-list{
-  display: flex;
-  text-align: center;
-  justify-content: space-evenly;
-  font-size: 0.8vw;
-  color: #111;
-  font-family: 'Poppins';
-  /* background-color: blue; */
-}
-
-#ds-list h1{
-  cursor: pointer;
-}
-
-.ds-section{
-  width: 90vw;
-  height: 73vh;
-  position: fixed;
-  /* background-color: red; */
-  top: 25vh;
-  left: 5vw;
-  display: flex;
-  justify-content: space-between;
-}
-
-.inner-section{
-  display: flex;
-  /* background-color: blue; */
-  width: 100%;
-  height: 82%;
+.logo{
+  width: 80%;
   
 }
 
-.ds-info{
-  width: 50%;
-  height: 100%;
-  padding-left: 1vw;
-  /* background-color: yellow; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.ds-img{
-  width: 98%;
-  height: 80%;
-  /* background-color: #09111a; */
-}
-
-.ds-img img{
-  width: 99.5%;
-  border: 0.05vw dashed #254569;
-}
-
-#_1{
-  width: 18vw;
-  /* background-color: red; */
+.logo h1,.logo p{
   margin: 0;
 }
 
-#_2{
-  width: 12vw;
-  margin: 0;
+.logo h1{
+  font-size: 2.5em;
+  font-weight: normal;
 }
 
-#_3{
-  width: 8vw;
-  margin: 0;
+#header-button{
+  border: 0.15em dashed white;
+  border-radius: 0.2em;
+  padding: 1em 2em 1em 2em;
 }
 
-#_4{
-  width: 8vw;
-  margin: 0;
-}
-#_5{
-  width: 5vw;
-  margin: 0;
-}
-
-#_1{
-  /* color: #1a314b; */
-}
-
-#homepage-footer{
+.ApresentacaoDS{
   width: 100%;
+}
+
+.data-structure{
+  width: 100%;
+  height: 30em;
   display: flex;
   justify-content: center;
-  font-size: large;
-  position: fixed;
-  top:95vh;
-  left:0vw;
+  align-items: center;
 }
 
-.ds-title{
-  font-size: 1vw;
-  margin: 0;
-  text-align: left;
-  color: #254569;
+.info-data-structure,.img-data-structure{
+  width: 45em;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.ds-title h1{
-  margin: 0;
+.inner-info{
+  width: 90%;
+  text-align: center;
 }
 
-.ds-button{
-  padding: 2vw;
-  width: 80%;
-  cursor: pointer;
-  font-family: 'Poppins';
+.inner-info h1{
+  font-size: 3em;
+  text-transform: uppercase;
+}
+
+.visualize-button-1{
   border-style: none;
-  background-color: #2a588d;
+  padding: 1em 5em 1em 5em;
+  font-size: 1.3em;
+  border-radius: 2em;
+  cursor: pointer;
+  font-family: 'Poppins','sans-serif';
   color: white;
-  border-radius: 0.2vw;
-  font-size: 1.3vw;
+  background-color: #09111a;
 }
 
-.ds-button:hover{
-  background-color: #254569;
+.visualize-button-1:hover{
+  background-color: #020508;
 }
+
+.visualize-button-2{
+  border-style: none;
+  padding: 1em 5em 1em 5em;
+  font-size: 1.3em;
+  border-radius: 2em;
+  cursor: pointer;
+  font-family: 'Poppins','sans-serif';
+  color: black;
+  background-color: #e7e7e7;
+}
+
+.visualize-button-2:hover{
+  background-color: #cacaca;
+}
+
+.img-data-structure{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.inner-img{
+  width: 90%;
+  height: 60%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+}
+
+img{
+  width: 100%;
+  border-radius: 0.3em;
+}
+
+
+.footer{
+  width: 100%;
+  height: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+}
+
+
 
 /* Works on Firefox */
 * {
