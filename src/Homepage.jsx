@@ -55,7 +55,7 @@ const Homepage = () => {
         title = {"Stack"}
         desc = {"A stack is a data structure where the elements are stored in sequence, but only the element at the top can be acessed or removed at any time."}
         color = {"#de3737"}
-        img = {linkedlistimage}
+        img = {stackimage}
         fontColor = {"#fff"}
         buttonClass = {"visualize-button-2"}
         done = {true}
