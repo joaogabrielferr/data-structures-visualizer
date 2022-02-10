@@ -54,10 +54,10 @@ const Homepage = () => {
       <ApresentacaoDS
         title = {"Stack"}
         desc = {"A stack is a data structure where the elements are stored in sequence, but only the element at the top can be acessed or removed at any time."}
-        color = {"#de3737"}
+        color = {"#9bcede"}
         img = {stackimage}
-        fontColor = {"#fff"}
-        buttonClass = {"visualize-button-2"}
+        fontColor = {"#111"}
+        buttonClass = {"visualize-button-1"}
         done = {true}
         link = {"/stack"}
       >
@@ -65,9 +65,9 @@ const Homepage = () => {
       <ApresentacaoDS
         title = {"Queue"}
         desc = {""}
-        color = {"#9aa6ad"}
+        color = {"#111"}
         img = {linkedlistimage}
-        fontColor = {"#111"}
+        fontColor = {"#fff"}
         buttonClass = {"visualize-button-2"}
         done = {false}
 
@@ -76,7 +76,18 @@ const Homepage = () => {
       <ApresentacaoDS
         title = {"Heap"}
         desc = {""}
-        color = {"#550278"}
+        color = {"#9bcede"}
+        img = {linkedlistimage}
+        fontColor = {"#111"}
+        buttonClass = {"visualize-button-1"}
+        done = {false}
+
+      >
+      </ApresentacaoDS>
+      <ApresentacaoDS
+        title = {"Red Black Tree"}
+        desc = {""}
+        color = {"#111"}
         img = {linkedlistimage}
         fontColor = {"#fff"}
         buttonClass = {"visualize-button-1"}

@@ -38,6 +38,20 @@ a, a:hover, a:focus, a:active{
   font-size: 1vw;
 }
 
+.bst-main-container{
+  width: 96%;
+  height: 100%;
+  display: flex;
+}
+
+.message-container{
+  margin-left: 0.5em;
+  color: #254569;
+  width: 100%;
+  height: 25em;
+  margin-top: 2vh;
+  overflow-y: auto;
+}
 
 #svgcontainer{
   margin-top: 2vh;
@@ -46,12 +60,12 @@ a, a:hover, a:focus, a:active{
 
 #info{
   width: 98%;
-  height: 28vh;
+  height: 12vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  padding-left: 1.5vw;
+  padding-left: 1.5em;
 }
 
 #info p{
@@ -60,8 +74,14 @@ a, a:hover, a:focus, a:active{
 
 #opBST{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  height: 5em;
+  width: 95%;
+}
+
+#zoominfo-wrapper{
+  width: 8em;
 }
 
 #messages{
@@ -98,15 +118,15 @@ a, a:hover, a:focus, a:active{
 
 input{
   width: 15vw;
-  height: 3.5vh;
-  padding: 0.5vw;
+  height: 3em;
+  /* padding: 0.5em; */
   border-style: none;
-  border: 0.1vw solid #254569;
+  border: 0.1em solid #254569;
 }
 
 .button{
   width: 5vw;
-  height: 2.84vw;
+  height: 3.4em;
   color: white;
   border-style: none;
   background-color: #254569;

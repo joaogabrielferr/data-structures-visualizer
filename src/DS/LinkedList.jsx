@@ -706,7 +706,7 @@ const LinkedList = () => {
         <div id="infolist">
           <div id="nameStack">
             <p onClick={()=>navigate("/")} style={{cursor:"pointer"}}>← return</p>
-            <h3>LinkedList Visualization Tool</h3>
+            <h3>LINKED LIST VISUALIZATION</h3>
           </div>
           <div>
             <input type="text" placeholder="Add a element" id="insertInput" />

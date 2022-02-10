@@ -321,7 +321,7 @@ const Stack = () => {
             <p onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
               ← return
             </p>
-            <h3>Stack Visualization Tool</h3>
+            <h3>STACK VISUALIZATION</h3>
           </div>
           <div>
             <input type="text" placeholder="Add a element" id="pushInput" />

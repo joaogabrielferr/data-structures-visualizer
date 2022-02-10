@@ -51,15 +51,28 @@ const BinaryTree = () => {
   const insert = (value) => {
     nodesToAdjust = [];
 
+    //clear the log of last operation
+    const messageDiv = document.getElementById("message");
+    while (messageDiv.firstChild) {
+      messageDiv.removeChild(messageDiv.lastChild);
+    }
+
     for (let i = 0; i < insertionSoFar.length; i++) {
       if (insertionSoFar[i] === value) {
-        document.getElementById("message").style.color = "red";
-        document.getElementById("message").innerText =
-          "Duplicate values are not allowed";
+        const newMsg = document.createElement("p");
+        newMsg.style.color = "red";
+        newMsg.innerText = "Duplicate values are not allowed";
+
+        messageDiv.appendChild(newMsg);
 
         return;
       }
     }
+
+    const newMsg = document.createElement("p");
+    newMsg.style.color = "#254569";
+    newMsg.innerText = `Inserting ${value} into the tree.`;
+    messageDiv.appendChild(newMsg);
 
     insertionSoFar.push(value);
 
@@ -87,10 +100,10 @@ const BinaryTree = () => {
     //if y === null this the root is being inserted
     if (y === null) {
       node.isROOT = true;
-      //values x and y for the root is always 50 and 10
+      //values x and y for the root is always 50 and 20
       //for the others ones the position is based on the parent position
       node.x = 50;
-      node.y = 20;
+      node.y = 30;
       node.isROOT = true;
       node.number = ++NODE_COUNTER;
       node.level = level;
@@ -125,14 +138,14 @@ const BinaryTree = () => {
 
       //first animate the sequence of nodes, then animate the insertion of the new node
 
-      AnimateSequence(sequence);
+      AnimateSequence(sequence, value);
 
       setTimeout(() => {
         AnimateInsertion(node, "L", y);
         insertButton.disabled = false;
         searchButton.disabled = false;
         deleteButton.disabled = false;
-        document.getElementById("message").innerText = "";
+        // document.getElementById("message").innerText = "";
       }, sequence.length * INSERTION_SEQUENCE_SPEED + 100);
     } else {
       //add node to the right of parent
@@ -153,21 +166,29 @@ const BinaryTree = () => {
       searchButton.disabled = true;
       deleteButton.disabled = true;
 
-      AnimateSequence(sequence);
+      AnimateSequence(sequence, value);
 
       setTimeout(() => {
         AnimateInsertion(node, "R", y);
         insertButton.disabled = false;
         searchButton.disabled = false;
         deleteButton.disabled = false;
-        document.getElementById("message").innerText = "";
+        // document.getElementById("message").innerText = "";
       }, sequence.length * INSERTION_SEQUENCE_SPEED + 100);
     }
   };
 
-  const AnimateSequence = (sequence) => {
+  const AnimateSequence = (sequence, value) => {
+    const messageDiv = document.getElementById("message");
+
     for (let i = 0; i < sequence.length; i++) {
       setTimeout(() => {
+        const newMsg = document.createElement("p");
+        if (sequence[i].value < value)
+          newMsg.innerText = `${value} > ${sequence[i].value}, going to the right.`;
+        else
+          newMsg.innerText = `${value} < ${sequence[i].value}, going to the left.`;
+        messageDiv.appendChild(newMsg);
         const n = sequence[i].number;
         const id = `${n}c`;
         const node = document.getElementById(id);
@@ -192,12 +213,6 @@ const BinaryTree = () => {
     const input = document.getElementById("input");
     if (input.value === "") return;
     const valor = parseInt(input.value);
-    document.getElementById("message").style.color = "#254569";
-    document.getElementById(
-      "message"
-    ).innerText = `Inserting ${valor} into the tree.`;
-    document.getElementById("controls").innerText =
-      "Use the mouse scroll to zoom in and out. Click and drag to move the tree.";
     insert(valor);
   };
 
@@ -436,7 +451,7 @@ const BinaryTree = () => {
       textoroot.setAttributeNS(
         null,
         "style",
-        "text-anchor:middle; fill:#254569 ;font-size:0.3vw; font-weight:bold; font-family:Poppins; dy=.3em"
+        "text-anchor:middle; fill:#254569 ;font-size:0.3em; font-weight:bold; font-family:Poppins; dy=.3em"
       );
       textoroot.textContent = `ROOT`;
       textoroot.setAttribute("class", "texto");
@@ -554,7 +569,7 @@ const BinaryTree = () => {
 
           nodesToAdjust = [...new Set(nodesToAdjust)];
 
-          console.log("nodes to adjust:", nodesToAdjust);
+          // console.log("nodes to adjust:", nodesToAdjust);
           for (let i = nodesToAdjust.length - 1; i >= 0; i--) {
             PulltoLeft(nodesToAdjust[i]);
           }
@@ -612,7 +627,7 @@ const BinaryTree = () => {
 
           nodesToAdjust = [...new Set(nodesToAdjust)];
 
-          console.log("nodes to adjust:", nodesToAdjust);
+          // console.log("nodes to adjust:", nodesToAdjust);
 
           for (let i = nodesToAdjust.length - 1; i >= 0; i--) {
             PulltoRight(nodesToAdjust[i]);
@@ -766,9 +781,16 @@ const BinaryTree = () => {
     if (input.value === "") return;
     const value = parseInt(input.value);
 
+    const messageDiv = document.getElementById("message");
+    while (messageDiv.firstChild) {
+      messageDiv.removeChild(messageDiv.lastChild);
+    }
+
     if (ROOT === null) {
-      document.getElementById("message").innerText =
-        "The value is NOT in the tree (the tree is currently empty)";
+      const divMessage = document.getElementById("message");
+      const newMsg = document.createElement("p");
+      newMsg.innerText = "the tree is currently empty";
+      divMessage.appendChild(newMsg);
       return;
     }
 
@@ -781,11 +803,11 @@ const BinaryTree = () => {
 
     const sequence = [];
     let inTree = false;
-    document.getElementById("message").style.color = "#254569";
-    document.getElementById(
-      "message"
-    ).innerText = `Searching for ${value} in the tree.`;
-
+    const divMessage = document.getElementById("message");
+    const newMsg = document.createElement("p");
+    newMsg.style.color = "#254569";
+    newMsg.innerText = `Searching for ${value} in the tree.`;
+    divMessage.appendChild(newMsg);
     while (current !== null) {
       sequence.push(current);
 
@@ -807,17 +829,28 @@ const BinaryTree = () => {
       }
     }
 
-    AnimateSearch(sequence, inTree);
+    AnimateSearch(sequence, inTree, value);
     return sequence;
   };
 
-  const AnimateSearch = (sequence, inTree) => {
+  const AnimateSearch = (sequence, inTree, value) => {
     searchButton.disabled = true;
     insertButton.disabled = true;
     deleteButton.disabled = true;
 
+    const divMessage = document.getElementById("message");
+
     for (let i = 0; i < sequence.length; i++) {
       setTimeout(() => {
+        const newMsg = document.createElement("p");
+
+        if (sequence[i].value < value)
+          newMsg.innerText = `${value} > ${sequence[i].value}, going to the right.`;
+        else if (sequence[i].value > value)
+          newMsg.innerText = `${value} < ${sequence[i].value}, going to the left.`;
+        else newMsg.innerText = `${value} = ${sequence[i].value}, found it.`;
+
+        divMessage.appendChild(newMsg);
         const n = sequence[i].number;
         const id = `${n}c`;
         const node = document.getElementById(id);
@@ -850,13 +883,16 @@ const BinaryTree = () => {
             "style",
             "fill:white; stroke:#254569; stroke-width: 1;"
           );
-          document.getElementById("message").innerText =
-            "The value is in the tree.";
+          const newMsg = document.createElement("p");
+          newMsg.innerText = "The value is in the tree.";
+          divMessage.appendChild(newMsg);
           searchButton.disabled = false;
           insertButton.disabled = false;
           deleteButton.disabled = false;
         }, INSERTION_SEQUENCE_SPEED / 2);
       } else {
+        const newMsg = document.createElement("p");
+        divMessage.appendChild(newMsg);
         const n = sequence[sequence.length - 1].number;
         const id = `${n}c`;
         const node = document.getElementById(id);
@@ -869,8 +905,8 @@ const BinaryTree = () => {
             "style",
             "fill:white; stroke:#254569; stroke-width: 1;"
           );
-          document.getElementById("message").innerText =
-            "The value is NOT in the tree.";
+          newMsg.innerText = "The value is NOT in the tree.";
+          divMessage.appendChild(newMsg);
           searchButton.disabled = false;
           insertButton.disabled = false;
           deleteButton.disabled = false;
@@ -887,6 +923,11 @@ const BinaryTree = () => {
     const value = parseInt(input.value);
 
     if (ROOT === null) return;
+
+    const messageDiv = document.getElementById("message");
+    while (messageDiv.firstChild) {
+      messageDiv.removeChild(messageDiv.lastChild);
+    }
 
     const sequence = search(value);
     let index = -1;
@@ -908,11 +949,15 @@ const BinaryTree = () => {
   };
 
   const AnimateDeletion = () => {
+    const divMessage = document.getElementById("message");
     for (let i = 0; i < deleteSequence.length; i++) {
       setTimeout(() => {
         const step = deleteSequence[i];
 
         if (step.op === "NLR") {
+          const newMsg = document.createElement("p");
+          newMsg.innerText = "Deleting node with no children.";
+          divMessage.appendChild(newMsg);
           let id = step.number;
           id = `${id}c`;
           const circle = document.getElementById(id);
@@ -934,7 +979,6 @@ const BinaryTree = () => {
             linha.remove();
           }
         } else if (step.op === "NR" || step.op === "NL") {
-          console.log("TESTE");
           let id = `${step.number}c`;
           const circle = document.getElementById(id);
           circle.remove();
@@ -942,10 +986,16 @@ const BinaryTree = () => {
           const text = document.getElementById(idtexto);
           text.remove();
           if (step.op === "NR") {
+            const newMsg = document.createElement("p");
+            newMsg.innerText = "Deleting node with no right child.";
+            divMessage.appendChild(newMsg);
             let idlinha = `${step.child.number}cl`;
             const linha = document.getElementById(idlinha);
             linha.remove();
           } else {
+            const newMsg = document.createElement("p");
+            newMsg.innerText = "Deleting node with no left child.";
+            divMessage.appendChild(newMsg);
             let idlinha = `${step.child.number}cr`;
             const linha = document.getElementById(idlinha);
             linha.remove();
@@ -984,6 +1034,10 @@ const BinaryTree = () => {
             UpdatePositions(step.child);
           }, 200);
         } else if (step.op === "TN") {
+          const newMsg = document.createElement("p");
+          newMsg.innerText =
+            "Deleting node with no two children. Getting smallest value on the right subtree.";
+          divMessage.appendChild(newMsg);
           let idtexto1 = `${step.node.number}t`;
           const text1 = document.getElementById(idtexto1);
           text1.remove();
@@ -1096,13 +1150,11 @@ const BinaryTree = () => {
   const deletion = (node, value) => {
     if (node === null) return;
 
-    console.log("olhando para:", node);
-
     if (value < node.value) node.left = deletion(node.left, value);
     else if (value > node.value) node.right = deletion(node.right, value);
     else {
       if (node.left === null && node.right === null) {
-        console.log("no sem filhos:", node);
+        // console.log("no sem filhos:", node);
 
         if (node.isROOT) {
           deleteSequence.push({
@@ -1269,7 +1321,7 @@ const BinaryTree = () => {
   useEffect(() => {
     svgref.current.style.border = "1px solid #254569";
     svgref.current.style.borderRadius = "0.3vw";
-    svgref.current.style.width = "98vw";
+    svgref.current.style.width = "75vw";
     svgref.current.style.height = "65vh";
 
     //////Implementation of zoom in and zoom out///////////////////
@@ -1299,11 +1351,9 @@ const BinaryTree = () => {
 
       if (e.deltaY < 0) {
         zoom--;
-        console.log("aumenta zoom");
         document.getElementById("zoominfo").innerText = `Zoom: ${zoom}x`;
       } else {
         zoom++;
-        console.log("diminui zoom");
         document.getElementById("zoominfo").innerText = `Zoom: ${zoom}x`;
       }
 
@@ -1352,6 +1402,7 @@ const BinaryTree = () => {
     };
 
     svgContainer.current.onmouseup = function (e) {
+      console.log("zoom");
       if (isPanning) {
         endPoint = { x: e.x, y: e.y };
         var dx = (startPoint.x - endPoint.x) / scale;
@@ -1439,84 +1490,98 @@ const BinaryTree = () => {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </p>
           <div>
-            <h2>Binary Search Tree Visualization Tool</h2>
+            <h2>BINARY SEARCH TREE VISUALIZATION</h2>
           </div>
         </div>
+      </div>
 
-        <div id="opBST">
-          <div>
-            <p style={{ margin: "0 auto" }}> &nbsp; Animation speed:</p>
-            <input
-              type="range"
-              min="500"
-              max="1500"
-              defaultValue="1000"
-              onChange={(e) => changeAnimationSpeed(e.target.value)}
-            ></input>
-          </div>
-          <p>&nbsp;</p>
-          <div>
-            {" "}
-            <input type="text" id="input" placeholder="Try adding a number" />
-            <button id="insertButton" className="button" onClick={add}>
-              Insert
-            </button>
-          </div>
-          <p>&nbsp;</p>
-          <div>
-            {" "}
-            <input
-              type="text"
-              id="inputsearch"
-              placeholder="Seach for a number"
-            />
-            <button id="searchButton" className="button" onClick={look}>
-              Search
-            </button>
-          </div>
-          <p>&nbsp;</p>
-          <div>
-            {" "}
-            <input type="text" id="inputdelete" placeholder="Delete a number" />
-            <button id="deleteButton" className="button" onClick={erase}>
-              Delete
-            </button>
-          </div>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
+      <div id="opBST">
+        <div>
+          <p style={{ margin: "0 auto" }}> &nbsp; Animation speed:</p>
+          <input
+            type="range"
+            min="500"
+            max="1500"
+            defaultValue="1000"
+            onChange={(e) => changeAnimationSpeed(e.target.value)}
+          ></input>
+        </div>
+        <p>&nbsp;</p>
+        <div>
+          <input type="text" id="input" placeholder="Try adding a number" />
+          <button id="insertButton" className="button" onClick={add}>
+            Insert
+          </button>
+        </div>
+        <p>&nbsp;</p>
+        <div>
+          <input
+            type="text"
+            id="inputsearch"
+            placeholder="Seach for a number"
+          />
+          <button id="searchButton" className="button" onClick={look}>
+            Search
+          </button>
+        </div>
+        <p>&nbsp;</p>
+        <div>
+          <input type="text" id="inputdelete" placeholder="Delete a number" />
+          <button id="deleteButton" className="button" onClick={erase}>
+            Delete
+          </button>
+        </div>
+        <p>&nbsp;</p>
+        <div id = "zoominfo-wrapper">
           <p id="zoominfo"></p>
         </div>
-        <div id="messages">
-          <div>
-            <p id="controls">&nbsp;</p>
-          </div>
-          <div>
-            <p id="message"></p>
-          </div>
+
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+      </div>
+
+      <div className="bst-main-container">
+        <div id="svgcontainer" ref={svgContainer}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="svg"
+            viewBox="0 0 100 100"
+            ref={svgref}
+          ></svg>
         </div>
-
-        {/* <h2>Zoom in and out using the mouse scroll, click and drag to move the tree</h2> */}
+        <div className="message-container">
+          <p id="controls">
+            <i className="fas fa-info-circle"></i>
+            Use the mouse scroll to zoom in and out. Click and drag to move the
+            tree.
+          </p>
+          <p>LOG:</p>
+          <div id="message"></div>
+        </div>
       </div>
-
-      <div id="svgcontainer" ref={svgContainer}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          id="svg"
-          viewBox="0 0 100 100"
-          ref={svgref}
-        ></svg>
+      <div id="footer">
+        João Gabriel &nbsp;{" "}
+        <a href="https://github.com/joaogabrielferr" target={"_blank"}>
+          <i className="fab fa-github"></i>
+        </a>
+        &nbsp;
+        <a
+          href="https://www.linkedin.com/in/joaogabrielferr/"
+          target={"_blank"}
+        >
+          <i className="fab fa-linkedin"></i>
+        </a>{" "}
       </div>
-      
     </div>
   );
 };
