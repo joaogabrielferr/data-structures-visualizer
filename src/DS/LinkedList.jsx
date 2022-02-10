@@ -621,7 +621,7 @@ const LinkedList = () => {
       linha.setAttribute("y2", `100%`);
       linha.style.stroke = "#254569";
       linha.style.strokeWidth = "0.1vw";
-      // linha.setAttribute("class", "linhaList");
+      linha.setAttribute("class", "linhaList");
       svgref.current.append(linha);
       pos += 10;
     }
@@ -638,7 +638,7 @@ const LinkedList = () => {
       linha.setAttribute("y2", `${pos}%`);
       linha.style.stroke = "#254569";
       linha.style.strokeWidth = "0.1vw";
-      // linha.setAttribute("class", "linhaList");
+      linha.setAttribute("class", "linhaList");
       svgref.current.append(linha);
       pos += 15;
     }
