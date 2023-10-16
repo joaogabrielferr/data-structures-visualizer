@@ -1,6 +1,12 @@
 
-# DataStructures-Visualizer
-Visualization tool for data structures such as Binary Tree, Binary Heap, Linked List, Stack, and others. You can visualize the main operations of each data structures, and how these operations modify the data structures. The animations were made with CSS and Scalable Vector Graphics ( svg tag on HTML).<br/>
+### Hello my friend,
+I'm not working on this anymore, but when i was, I had just started to learn frontend development, so be aware: spagetti code ahead.<br/>
+I also didnt know what responsive layouts were at that point, so this only works on desktop, maybe tablets.<br/>
+But at least everythings works (the binary search tree visualizer is a marvelous achievement to be honest).
+<br/><br/><br/>
+
+# Real time Data structures Visualizer
+Visualization tool (you can see where the data is going) for data structures such as Binary Tree, Binary Heap, Linked List, Stack, and others. You can visualize the main operations of each data structures, and how these operations modify the data structures. The animations were made with CSS and Scalable Vector Graphics ( svg tag on HTML).<br/>
 You can use it at https://joaogabrielferr.github.io/data-structures-visualizer/
   
 # Binary Search Tree
