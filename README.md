@@ -1,5 +1,5 @@
 
-I built this years ago when i was learning frontend development, so the code is a litle mess.<br/>
+I built this years ago when i was learning frontend development, so the code is a little mess.<br/>
 I also didn't know what responsive layouts were at that point, so this project only works on desktop, maybe tablets.<br/>
 But at least everythings works.
 <br/><br/><br/>
