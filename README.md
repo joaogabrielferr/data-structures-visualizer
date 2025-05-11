@@ -1,7 +1,7 @@
 
-I'm not working on this anymore, but when i was, I had just started to learn frontend development, so be aware: spagetti code ahead.<br/>
-I also didnt know what responsive layouts were at that point, so this only works on desktop, maybe tablets.<br/>
-But at least everythings works (the binary search tree visualizer is a marvelous achievement to be honest).
+I built this years ago when i was learning frontend development, so the code is a litle mess.<br/>
+I also didn't know what responsive layouts were at that point, so this project only works on desktop, maybe tablets.<br/>
+But at least everythings works.
 <br/><br/><br/>
 
 # Real time Data structures Visualizer
